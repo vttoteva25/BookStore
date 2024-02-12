@@ -16,16 +16,21 @@ namespace BS.Data.Entities
         [StringLength(50)]
         public string? Genre {  get; set; }
 
+        [Range(0.00, double.MaxValue)]
         public decimal Price { get; set; }
 
         [StringLength(20)]
         public string? Language { get; set; }
 
-        public int QuantityAvailable { get; set; }
+        public int QuantityAvailable { get; set; } = 0;
 
-        public bool Available { get; set; }
+        public bool Available { get; set; } = false;
 
         [StringLength(int.MaxValue)]
         public string? Description { get; set; }
+
+        public ICollection<Order> Orders { get; set; }
+
+
     }
 }

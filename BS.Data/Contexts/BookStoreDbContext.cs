@@ -26,10 +26,32 @@ namespace BS.Data.Contexts
         public DbSet<BookOrder> BooksOrders { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MoviesDbContext"/> class.
+        /// Initializes a new instance of the <see cref="BookStoreDbContext"/> class.
         /// </summary>
         /// <param name="options">Database context options.</param>
         public BookStoreDbContext(DbContextOptions<BookStoreDbContext> options) : base(options) { }
-    
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configure many-to-many relationship between Book and Order
+            modelBuilder.Entity<Book>()
+                .HasMany(b => b.Orders)
+                .WithMany(o => o.Books)
+                .UsingEntity<BookOrder>(
+                    j => j
+                        .HasOne(bo => bo.Order)
+                        .WithMany()
+                        .HasForeignKey(bo => bo.OrderId),
+                    j => j
+                        .HasOne(bo => bo.Book)
+                        .WithMany()
+                        .HasForeignKey(bo => bo.BookId)
+                );
+
+            modelBuilder.Entity<BookOrder>()
+                .HasKey(bo => new { bo.BookId, bo.OrderId });
+        }
+
     }
 }

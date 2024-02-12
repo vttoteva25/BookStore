@@ -13,16 +13,24 @@ namespace BS.Data.Entities
 
         public DateTime OrderDate { get; set; }
 
+        [Range(0.00, double.MaxValue)]
         public decimal TotalAmount { get; set; }
 
+        [StringLength(20)]
         public string? PaymentMethod { get; set; }
 
+        [StringLength(20)]
         public string? DeliveryAddress { get; set; }
 
+        [StringLength(20)]
         public string? DeliveryStatus { get; set; }
 
         public bool IsApproved { get; set; } = false;
 
         public bool IsDelivered { get; set; } = false;
+
+        public Customer Customer { get; set; }
+
+        public ICollection<Book> Books { get; set; }
     }
 }
