@@ -1,3 +1,5 @@
+using BS.ApplicationServices.Implementations;
+using BS.ApplicationServices.Interfaces;
 using BS.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -23,7 +25,7 @@ try
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
-
+    builder.Services.AddScoped<IAuthorService, AuthorService>();
     builder.Services.AddSwaggerGen(options =>
     {
         var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";

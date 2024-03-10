@@ -21,6 +21,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BS.ApplicationServices\BS.ApplicationServices.csproj" />
     <ProjectReference Include="..\BS.Data\BS.Data.csproj" />
   </ItemGroup>
 
