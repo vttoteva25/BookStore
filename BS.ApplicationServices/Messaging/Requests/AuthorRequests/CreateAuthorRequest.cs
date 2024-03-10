@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BS.ApplicationServices.Messaging.Requests
+namespace BS.ApplicationServices.Messaging.Requests.AuthorRequests
 {
     public class CreateAuthorRequest
     {
@@ -13,7 +13,7 @@ namespace BS.ApplicationServices.Messaging.Requests
 
         public CreateAuthorRequest(AuthorVM author)
         {
-            Author = author;    
+            Author = author;
         }
     }
 }

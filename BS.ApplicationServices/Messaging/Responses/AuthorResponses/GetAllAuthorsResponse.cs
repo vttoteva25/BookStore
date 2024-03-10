@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BS.ApplicationServices.Messaging.Responses
+namespace BS.ApplicationServices.Messaging.Responses.AuthorResponses
 {
     public class GetAllAuthorsResponse : ServiceResponseBase
     {

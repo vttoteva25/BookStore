@@ -1,5 +1,5 @@
-﻿using BS.ApplicationServices.Messaging.Requests;
-using BS.ApplicationServices.Messaging.Responses;
+﻿using BS.ApplicationServices.Messaging.Requests.AuthorRequests;
+using BS.ApplicationServices.Messaging.Responses.AuthorResponses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace BS.ApplicationServices.Interfaces
         /// </summary>
         /// <param name="request">Get title by request object.</param>
         /// <returns>Return single author by title.</returns>
-        //Task<GetByTitleResponse> GetByTitleAsync(GetByTitleRequest request);
+        Task<GetAuthortByNameResponse> GetAuthorByNameAsync(GetAuthortByNameRequest request);
 
         /// <summary>
         /// Create author.

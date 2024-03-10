@@ -1,12 +1,12 @@
 ﻿using BS.ApplicationServices.Interfaces;
-using BS.ApplicationServices.Messaging.Requests;
-using BS.ApplicationServices.Messaging.Responses;
 using BS.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System;
 using Azure;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests;
+using BS.ApplicationServices.Messaging.Responses.AuthorResponses;
 
 namespace BS.ApplicationServices.Implementations
 {
@@ -49,6 +49,33 @@ namespace BS.ApplicationServices.Implementations
                     Description = author.Description
                 });
             }
+
+            return response;
+        }
+
+        public async Task<GetAuthortByNameResponse> GetAuthorByNameAsync(GetAuthortByNameRequest request)
+        {
+            GetAuthortByNameResponse response = new();
+
+            var author = await _context.Authors.SingleOrDefaultAsync(x => x.FirstName == request.FirstName && x.LastName == request.LastName);
+            if (author is null)
+            {
+                _logger.LogInformation("Author is not found with first and last name: {firstName} {lastname}", request.FirstName, request.LastName);
+                response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
+                return response;
+            }
+
+            response.Author = new()
+            {
+                AuthorId = author.AuthorId,
+                FirstName = author.FirstName,
+                LastName = author.LastName,
+                Email = author.Email,
+                CareerStartingDate = author.CareerStartingDate,
+                WrittenBooksCount = author.WrittenBooksCount,
+                IsActiveNow = author.IsActiveNow,
+                Description = author.Description
+            };
 
             return response;
         }
