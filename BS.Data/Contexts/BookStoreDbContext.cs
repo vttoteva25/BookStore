@@ -26,6 +26,11 @@ namespace BS.Data.Contexts
         public DbSet<BookOrder> BooksOrders { get; set; }
 
         /// <summary>
+        /// Gets or sets authors dbset collection.
+        /// </summary>
+        public DbSet<Author> Authors { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BookStoreDbContext"/> class.
         /// </summary>
         /// <param name="options">Database context options.</param>
