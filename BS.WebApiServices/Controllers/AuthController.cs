@@ -1,4 +1,5 @@
 ﻿using BS.ApplicationServices.Interfaces;
+using BS.Data.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +18,9 @@ namespace BS.WebApiServices.Controllers
         }
 
         [HttpPut]
-        public async Task<AuthenticationResponse> Authenticate([FromQuery] string clientId, [FromQuery] string secret)
+        public async Task<AuthenticationResponse> Authenticate([FromQuery] Customer customer)
         {
-            string? token = _jwtauthenticationsManager.Authenticate(clientId, secret);
+            string? token = _jwtauthenticationsManager.Authenticate(customer);
 
             ArgumentNullException.ThrowIfNull(token);
 

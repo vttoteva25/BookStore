@@ -1,4 +1,6 @@
 ﻿using BS.ApplicationServices.Interfaces;
+using BS.Data.Entities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -8,39 +10,45 @@ namespace BS.ApplicationServices.Implementations
 {
     public class JWTAuthenticationsManager : IJWTAuthenticationsManager
     {
-        private readonly Dictionary<string, string> _clients = new()
-        {
-            { "fmi", "fmi" }
-        };
+        private readonly IConfiguration configuration;
+        private readonly SymmetricSecurityKey key;
 
-        private readonly string tokenKey;
-
-        public JWTAuthenticationsManager(string tokenKey)
+        /// <summary>
+        /// Initializes a new instance of the JWTAuthenticationsManager class.
+        /// </summary>
+        /// <param name="config">The configuration settings for JWT token generation.</param>
+        public JWTAuthenticationsManager(IConfiguration config)
         {
-            this.tokenKey = tokenKey;
+            this.configuration = config;
+            this.key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SigningKey"]));
         }
 
-        public string? Authenticate(string clientId, string secret)
+        /// <summary>
+        /// Creates a JWT token for the specified user.
+        /// </summary>
+        /// <param name="customer">The user for whom the token is generated.</param>
+        /// <returns>Returns the generated JWT token.</returns>
+        public string Authenticate(Customer customer)
         {
-            if (!_clients.Any(x => x.Key == clientId && x.Value == secret))
+            var claims = new List<Claim>()
             {
-                return null;
-            }
-
-            JwtSecurityTokenHandler handler = new();
-            var key = Encoding.ASCII.GetBytes(tokenKey);
-            SecurityTokenDescriptor tokenDescriptor = new()
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, clientId),
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(30),
-                SigningCredentials = new(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                new Claim(JwtRegisteredClaimNames.Email, customer.Email),
+                new Claim(JwtRegisteredClaimNames.GivenName, customer.Username)
             };
 
-            var token = handler.CreateToken(tokenDescriptor);
-            return handler.WriteToken(token);
-        }
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var tokenDesc = new SecurityTokenDescriptor()
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(7),
+                SigningCredentials = creds,
+                Issuer = configuration["JWT:Issuer"],
+                Audience = configuration["JWT:Audience"]
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDesc);
+
+            return tokenHandler.WriteToken(token);
+        }       
     }
 }

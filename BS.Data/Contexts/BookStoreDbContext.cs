@@ -1,9 +1,10 @@
 ﻿using BS.Data.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BS.Data.Contexts
 {
-    public class BookStoreDbContext : DbContext
+    public class BookStoreDbContext : IdentityDbContext<Customer>
     {
         /// <summary>
         /// Gets or sets book dbset collection.
@@ -29,7 +30,7 @@ namespace BS.Data.Contexts
         /// Initializes a new instance of the <see cref="BookStoreDbContext"/> class.
         /// </summary>
         /// <param name="options">Database context options.</param>
-        public BookStoreDbContext(DbContextOptions<BookStoreDbContext> options) : base(options) { }
+        public BookStoreDbContext(DbContextOptions options) : base(options) { }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

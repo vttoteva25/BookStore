@@ -1,7 +1,9 @@
-﻿namespace BS.ApplicationServices.Interfaces
+﻿using BS.Data.Entities;
+
+namespace BS.ApplicationServices.Interfaces
 {
     public interface IJWTAuthenticationsManager
     {
-        string? Authenticate(string clientId, string secret);
+        string? Authenticate(Customer customer);
     }
 }
