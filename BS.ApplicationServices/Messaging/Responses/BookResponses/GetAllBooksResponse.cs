@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BS.ApplicationServices.Messaging.Responses.AuthorResponses
+namespace BS.ApplicationServices.Messaging.Responses.BookResponses
 {
-    public class UpdateAuthorResponse : ServiceResponseBase
+    public class GetAllBooksResponse:ServiceResponseBase
     {
-
+        public List<BookVM> Books { get; set; }
     }
 }

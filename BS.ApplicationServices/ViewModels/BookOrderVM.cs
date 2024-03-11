@@ -12,8 +12,5 @@ namespace BS.ApplicationServices.ViewModels
         public required Guid BookId { get; set; }
 
         public required Guid OrderId { get; set; }
-
-        public BookVM Book { get; set; }
-        public OrderVM Order { get; set; }
     }
 }

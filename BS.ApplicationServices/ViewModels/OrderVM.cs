@@ -28,8 +28,5 @@ namespace BS.ApplicationServices.ViewModels
 
         public bool IsDelivered { get; set; } = false;
 
-        public CustomerVM Customer { get; set; }
-
-        public ICollection<BookVM> Books { get; set; }
     }
 }

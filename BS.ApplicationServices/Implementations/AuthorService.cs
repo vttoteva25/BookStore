@@ -151,7 +151,7 @@ namespace BS.ApplicationServices.Implementations
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Author is not updated.");
+                _logger.LogError(ex, "Author is not deleted.");
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
                 return response;
             }

@@ -30,8 +30,5 @@ namespace BS.ApplicationServices.ViewModels
 
         public string? Description { get; set; }
 
-        public ICollection<OrderVM> Orders { get; set; }
-
-        public AuthorVM Author { get; set; }
     }
 }
