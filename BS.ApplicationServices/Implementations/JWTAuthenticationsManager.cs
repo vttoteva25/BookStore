@@ -33,7 +33,7 @@ namespace BS.ApplicationServices.Implementations
             var claims = new List<Claim>()
             {
                 new Claim(JwtRegisteredClaimNames.Email, customer.Email),
-                new Claim(JwtRegisteredClaimNames.GivenName, customer.Username)
+                new Claim(JwtRegisteredClaimNames.GivenName, customer.UserName)
             };
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
