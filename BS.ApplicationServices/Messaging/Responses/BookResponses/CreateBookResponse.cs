@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BS.ApplicationServices.Messaging.Responses.BookResponses
+﻿namespace BS.ApplicationServices.Messaging.Responses.BookResponses
 {
     public class CreateBookResponse:ServiceResponseBase
     {

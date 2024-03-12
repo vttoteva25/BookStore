@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BS.ApplicationServices.ViewModels
+﻿namespace BS.ApplicationServices.ViewModels
 {
     public class CustomerVM
     {
@@ -17,13 +10,15 @@ namespace BS.ApplicationServices.ViewModels
 
         public string? Email { get; set; }
 
+        public string? Username { get; set; }
+
         public string? Phone { get; set; }
 
         public string? Address { get; set; }
 
         public DateTime RegistrationDate { get; set; }
 
-        public bool hasOrders { get; set; }
+        public bool HasOrders { get; set; }
 
         public int OrdersCount { get; set; }
     }

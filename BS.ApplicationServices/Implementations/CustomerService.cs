@@ -1,16 +1,11 @@
 ﻿using BS.ApplicationServices.Interfaces;
 using BS.ApplicationServices.Messaging.Requests.CustomerRequests;
-using BS.ApplicationServices.Messaging.Responses.AuthorResponses;
 using BS.ApplicationServices.Messaging.Responses.CustomerResponse;
 using BS.Data.Contexts;
 using BS.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BS.ApplicationServices.Implementations
 {
@@ -18,16 +13,19 @@ namespace BS.ApplicationServices.Implementations
     {
         private readonly ILogger<CustomerService> _logger;
         private readonly BookStoreDbContext _context;
+        private readonly UserManager<Customer> _userManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomerService"/> class.
         /// </summary>
         /// <param name="logger">Logger.</param>
         /// <param name="context">Customer database context.</param>
-        public CustomerService(ILogger<CustomerService> logger, BookStoreDbContext context)
+        public CustomerService(ILogger<CustomerService> logger, BookStoreDbContext context,
+            UserManager<Customer> userManager)
         {
             _logger = logger;
             _context = context;
+            _userManager = userManager;
         }
 
         public async Task<GetCustomerByNameResponse> GetCustomerByNameAsync(GetCustomerByNameRequest request)
@@ -44,7 +42,7 @@ namespace BS.ApplicationServices.Implementations
 
             response.Customer = new()
             {
-                CustomerId = customer.CustomerId,
+                CustomerId = customer.Id,
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
                 Email = customer.Email,
@@ -52,7 +50,7 @@ namespace BS.ApplicationServices.Implementations
                 Phone = customer.Phone,
                 RegistrationDate = DateTime.Now,
                 OrdersCount = customer.OrdersCount,
-                hasOrders = customer.hasOrders
+                hasOrders = customer.HasOrders
             };
 
             return response;

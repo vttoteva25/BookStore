@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BS.Data.Entities;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BS.WebApiServices.Controllers
 {
@@ -6,7 +8,7 @@ namespace BS.WebApiServices.Controllers
     [ApiController]
     [Produces("application/json")]
     public class CustomersController : Controller
-    {
+    {        
         public IActionResult Index()
         {
             return View();
