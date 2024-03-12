@@ -42,7 +42,7 @@ namespace BS.ApplicationServices.Implementations
 
             response.Customer = new()
             {
-                CustomerId = customer.Id,
+                CustomerId = Guid.Parse(customer.Id),
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
                 Email = customer.Email,
@@ -50,7 +50,7 @@ namespace BS.ApplicationServices.Implementations
                 Phone = customer.Phone,
                 RegistrationDate = DateTime.Now,
                 OrdersCount = customer.OrdersCount,
-                hasOrders = customer.HasOrders
+                HasOrders = customer.HasOrders
             };
 
             return response;
@@ -69,7 +69,7 @@ namespace BS.ApplicationServices.Implementations
             {
                 response.Customers.Add(new()
                 {
-                    CustomerId = customer.CustomerId,
+                    CustomerId = Guid.Parse(customer.Id),
                     FirstName = customer.FirstName,
                     LastName = customer.LastName,
                     Email = customer.Email,
@@ -77,7 +77,7 @@ namespace BS.ApplicationServices.Implementations
                     Phone = customer.Phone,
                     RegistrationDate = DateTime.Now,
                     OrdersCount = customer.OrdersCount,
-                    hasOrders = customer.hasOrders
+                    HasOrders = customer.HasOrders
                 });
             }
 
@@ -92,7 +92,7 @@ namespace BS.ApplicationServices.Implementations
             {
                 await _context.Customers.AddAsync(new()
                 {
-                    CustomerId = request.Customer.CustomerId,
+                    Id = request.Customer.CustomerId.ToString(),
                     FirstName = request.Customer.FirstName,
                     LastName = request.Customer.LastName,
                     Email = request.Customer.Email,
@@ -100,7 +100,7 @@ namespace BS.ApplicationServices.Implementations
                     Phone = request.Customer.Phone,
                     RegistrationDate = DateTime.Now,
                     OrdersCount = request.Customer.OrdersCount,
-                    hasOrders = request.Customer.hasOrders
+                    HasOrders = request.Customer.HasOrders
                 });
                 await _context.SaveChangesAsync();
             }
@@ -120,7 +120,7 @@ namespace BS.ApplicationServices.Implementations
 
             try
             {
-                var customer = await _context.Customers.SingleOrDefaultAsync(x => x.CustomerId == request.CustomerId);
+                var customer = await _context.Customers.SingleOrDefaultAsync(x => x.Id == request.CustomerId.ToString());
                 if (customer is null)
                 {
                     _logger.LogInformation("Customer is not found with id: {CustomerId}", request.CustomerId);
@@ -145,7 +145,7 @@ namespace BS.ApplicationServices.Implementations
 
             try
             {
-                var customer = await _context.Customers.SingleOrDefaultAsync(x => x.CustomerId == request.CustomerId);
+                var customer = await _context.Customers.SingleOrDefaultAsync(x => x.Id == request.CustomerId.ToString());
                 if (customer is null)
                 {
                     _logger.LogInformation("Customer is not found with id: {CustomerId}", request.CustomerId);

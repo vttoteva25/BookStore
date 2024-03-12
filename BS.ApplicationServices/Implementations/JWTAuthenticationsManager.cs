@@ -24,9 +24,9 @@ namespace BS.ApplicationServices.Implementations
         }
 
         /// <summary>
-        /// Creates a JWT token for the specified user.
+        /// Creates a JWT token for the specified customer.
         /// </summary>
-        /// <param name="customer">The user for whom the token is generated.</param>
+        /// <param name="customer">The customer for whom the token is generated.</param>
         /// <returns>Returns the generated JWT token.</returns>
         public string Authenticate(Customer customer)
         {

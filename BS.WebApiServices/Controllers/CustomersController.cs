@@ -1,6 +1,4 @@
-﻿using BS.Data.Entities;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace BS.WebApiServices.Controllers
 {

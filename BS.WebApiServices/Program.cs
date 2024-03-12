@@ -32,7 +32,12 @@ try
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddScoped<IAuthorService, AuthorService>();
-    builder.Services.AddSwaggerGen(options =>
+    builder.Services.AddScoped<IBookService, BookService>();
+    builder.Services.AddScoped<ICustomerService, CustomerService>();
+    builder.Services.AddScoped<IOrderService, OrderService>();
+    builder.Services.AddScoped<IJWTAuthenticationsManager, JWTAuthenticationsManager>();
+
+    builder.Services.AddSwaggerGen(option =>
     {
         var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
         option.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
@@ -96,7 +101,6 @@ try
     builder.Services.AddSerilog();
 
     builder.Services.AddAuthorization();
-    builder.Services.AddScoped<IJWTAuthenticationsManager, JWTAuthenticationsManager>();
 
     var app = builder.Build();
 
