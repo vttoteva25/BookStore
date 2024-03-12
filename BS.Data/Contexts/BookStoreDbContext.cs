@@ -1,9 +1,11 @@
 ﻿using BS.Data.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BS.Data.Contexts
 {
-    public class BookStoreDbContext : DbContext
+    public class BookStoreDbContext : IdentityDbContext<Customer>
     {
         /// <summary>
         /// Gets or sets book dbset collection.
@@ -34,7 +36,7 @@ namespace BS.Data.Contexts
         /// Initializes a new instance of the <see cref="BookStoreDbContext"/> class.
         /// </summary>
         /// <param name="options">Database context options.</param>
-        public BookStoreDbContext(DbContextOptions<BookStoreDbContext> options) : base(options) { }
+        public BookStoreDbContext(DbContextOptions options) : base(options) { }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -56,6 +58,22 @@ namespace BS.Data.Contexts
 
             modelBuilder.Entity<BookOrder>()
                 .HasKey(bo => new { bo.BookId, bo.OrderId });
+
+            List<IdentityRole> identityRoles = new List<IdentityRole>()
+            {
+                new IdentityRole()
+                {
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole()
+                {
+                    Name = "User",
+                    NormalizedName = "USER"
+                }
+            };
+
+            modelBuilder.Entity<IdentityRole>().HasData(identityRoles);
         }
 
     }
