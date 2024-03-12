@@ -15,6 +15,7 @@ namespace BS.Data.Entities
         public required string LastName { get; set; }
 
         [StringLength(50)]
+        [EmailAddress]
         public string? Email { get; set; }
 
         //[StringLength(50)]

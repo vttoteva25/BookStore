@@ -1,4 +1,5 @@
 ﻿using BS.Data.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,6 +53,22 @@ namespace BS.Data.Contexts
 
             modelBuilder.Entity<BookOrder>()
                 .HasKey(bo => new { bo.BookId, bo.OrderId });
+
+            List<IdentityRole> identityRoles = new List<IdentityRole>()
+            {
+                new IdentityRole()
+                {
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole()
+                {
+                    Name = "User",
+                    NormalizedName = "USER"
+                }
+            };
+
+            modelBuilder.Entity<IdentityRole>().HasData(identityRoles);
         }
 
     }

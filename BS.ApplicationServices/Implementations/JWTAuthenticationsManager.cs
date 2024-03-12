@@ -45,6 +45,7 @@ namespace BS.ApplicationServices.Implementations
                 Issuer = configuration["JWT:Issuer"],
                 Audience = configuration["JWT:Audience"]
             };
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDesc);
 
