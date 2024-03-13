@@ -1,8 +1,8 @@
 ﻿using BS.ApplicationServices.Interfaces;
 using BS.ApplicationServices.Messaging.Responses.CustomerResponse;
 using BS.ApplicationServices.Messaging;
-using BS.ApplicationServices.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using BS.ApplicationServices.ViewModels.CustomerVM;
 /// <summary>
 /// Customers controller.
 /// </summary>
@@ -12,13 +12,15 @@ using Microsoft.AspNetCore.Mvc;
 public class CustomersController : Controller
 {
     private readonly ICustomerService _service;
+    private readonly IJWTAuthenticationsManager _authenticationManager;
     /// <summary>
     /// Initializes a new instance of the <see cref="CustomersController"/> class.
     /// </summary>
     /// <param name="service">Customer service.</param>
-    public CustomersController(ICustomerService service)
+    public CustomersController(ICustomerService service, IJWTAuthenticationsManager authenticationManager)
     {
         _service = service;
+        _authenticationManager = authenticationManager; 
     }
 
     /// <summary>
@@ -54,7 +56,7 @@ public class CustomersController : Controller
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ServiceResponseError), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> CreateCustomer([FromBody] CustomerVM model) => Ok(await _service.SaveAsync(new(model)));
+    public async Task<IActionResult> CreateCustomer([FromBody] RegisterCustomerVM model) => Ok(await _service.SaveAsync(new(model)));
 
     /// <summary>
     /// Update customer.

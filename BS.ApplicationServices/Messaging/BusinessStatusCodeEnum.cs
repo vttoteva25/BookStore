@@ -6,5 +6,6 @@
         Success,
         MissingObject,
         InternalServerError,
+        BadRequest
     }
 }

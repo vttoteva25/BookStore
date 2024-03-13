@@ -71,10 +71,7 @@ namespace BS.Data.Contexts
                     Name = "User",
                     NormalizedName = "USER"
                 }
-            };
-
-            modelBuilder.Entity<IdentityRole>()
-                .HasKey(ir => new { ir.Id });
+            };         
 
             modelBuilder.Entity<IdentityRole>()
                 .HasData(identityRoles);

@@ -15,9 +15,6 @@ namespace BS.Data.Entities
         [EmailAddress]
         public string? Email { get; set; }
 
-        [StringLength(50)]
-        public string? Password { get; set; }
-
         [StringLength(10)]
         public override string? PhoneNumber { get; set; }
 

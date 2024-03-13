@@ -1,12 +1,12 @@
-﻿using BS.ApplicationServices.ViewModels;
+﻿using BS.ApplicationServices.ViewModels.CustomerVM;
 
 namespace BS.ApplicationServices.Messaging.Requests.CustomerRequests
 {
     public class CreateCustomerRequest
     {
-        public CustomerVM Customer { get; set; }
+        public RegisterCustomerVM Customer { get; set; }
 
-        public CreateCustomerRequest(CustomerVM customer)
+        public CreateCustomerRequest(RegisterCustomerVM customer)
         {
             Customer = customer;
         }

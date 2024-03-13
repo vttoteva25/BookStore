@@ -36,12 +36,12 @@ namespace BS.ApplicationServices.Implementations
                 new Claim(JwtRegisteredClaimNames.GivenName, customer.UserName)
             };
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var tokenDesc = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.Now.AddDays(7),
-                SigningCredentials = creds,
+                SigningCredentials = credentials,
                 Issuer = configuration["JWT:Issuer"],
                 Audience = configuration["JWT:Audience"]
             };

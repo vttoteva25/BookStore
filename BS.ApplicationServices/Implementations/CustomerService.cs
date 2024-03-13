@@ -14,6 +14,7 @@ namespace BS.ApplicationServices.Implementations
         private readonly ILogger<CustomerService> _logger;
         private readonly BookStoreDbContext _context;
         private readonly UserManager<Customer> _userManager;
+        private readonly IJWTAuthenticationsManager _jwtAuthenticationsManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomerService"/> class.
@@ -21,11 +22,12 @@ namespace BS.ApplicationServices.Implementations
         /// <param name="logger">Logger.</param>
         /// <param name="context">Customer database context.</param>
         public CustomerService(ILogger<CustomerService> logger, BookStoreDbContext context,
-            UserManager<Customer> userManager)
+            UserManager<Customer> userManager, IJWTAuthenticationsManager jwtAuthenticationsManager)
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
+            _jwtAuthenticationsManager = jwtAuthenticationsManager;
         }        
 
         public async Task<GetCustomerByNameResponse> GetCustomerByNameAsync(GetCustomerByNameRequest request)
@@ -46,7 +48,6 @@ namespace BS.ApplicationServices.Implementations
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
                 Email = customer.Email,
-                Password = customer.Password,
                 Address = customer.Address,
                 Phone = customer.PhoneNumber,
                 RegistrationDate = DateTime.Now,
@@ -74,7 +75,6 @@ namespace BS.ApplicationServices.Implementations
                     FirstName = customer.FirstName,
                     LastName = customer.LastName,
                     Email = customer.Email,
-                    Password = customer.Password,
                     Address = customer.Address,
                     Phone = customer.PhoneNumber,
                     RegistrationDate = DateTime.Now,
@@ -94,30 +94,36 @@ namespace BS.ApplicationServices.Implementations
             {
                 var customer = new Customer()
                 {
-                    Id = new Guid().ToString(),
+                    Id = Guid.NewGuid().ToString(),
                     FirstName = request.Customer.FirstName,
                     LastName = request.Customer.LastName,
                     UserName = request.Customer.Username,
                     Email = request.Customer.Email,
                     Address = request.Customer.Address,
                     PhoneNumber = request.Customer.Phone,
-                    RegistrationDate = DateTime.Now,
-                    OrdersCount = request.Customer.OrdersCount,
-                    HasOrders = request.Customer.HasOrders
                 };
 
                 var createdUser = await _userManager.CreateAsync( customer, request.Customer.Password);
 
                 if (createdUser.Succeeded)
                 {
-                    var roleResult = await _userManager.AddToRoleAsync(customer, "User");
+                    var roleResult = await _userManager.AddToRoleAsync(customer, "Admin");
                     if(roleResult.Succeeded)
                     {
-                        return response;
+                        response.StatusCode = Messaging.BusinessStatusCodeEnum.Success;
+                        response.Email = customer.Email;
+                        response.Username = customer.UserName;
+                        response.Token = _jwtAuthenticationsManager.Authenticate(customer);                        
+                    }
+                    else
+                    {
+                         response.StatusCode = Messaging.BusinessStatusCodeEnum.BadRequest; 
                     }
                 }
-
-                //await _context.SaveChangesAsync();
+                else
+                {
+                    response.StatusCode = Messaging.BusinessStatusCodeEnum.BadRequest;
+                }
             }
             catch (Exception ex)
             {
