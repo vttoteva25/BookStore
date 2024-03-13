@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BS.ApplicationServices.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BS.WebApiServices.Controllers
 {
@@ -6,10 +7,19 @@ namespace BS.WebApiServices.Controllers
     [ApiController]
     [Produces("application/json")]
     public class CustomersController : Controller
-    {        
-        public IActionResult Index()
+    {
+
+        private readonly ICustomerService _service;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomersController"/> class.
+        /// </summary>
+        /// <param name="service">Author service.</param>
+        public CustomersController(ICustomerService service)
         {
-            return View();
+            _service = service;
         }
+
+        [HttpGet]
+        public IActionResult Get() => Ok();
     }
 }
