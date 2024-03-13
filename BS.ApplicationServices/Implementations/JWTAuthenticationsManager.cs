@@ -20,7 +20,7 @@ namespace BS.ApplicationServices.Implementations
         public JWTAuthenticationsManager(IConfiguration config)
         {
             this.configuration = config;
-            this.key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:SigningKey"]));
+            this.key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]));
         }
 
         /// <summary>
