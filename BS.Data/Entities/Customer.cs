@@ -5,9 +5,6 @@ namespace BS.Data.Entities
 {
     public class Customer : IdentityUser
     {
-        //[Key]
-        //public required Guid CustomerId { get; set; }
-
         [StringLength(20)]
         public required string FirstName {  get; set; }
 
@@ -18,14 +15,11 @@ namespace BS.Data.Entities
         [EmailAddress]
         public string? Email { get; set; }
 
-        //[StringLength(50)]
-        //public string? Username { get; set; }
-
         [StringLength(50)]
         public string? Password { get; set; }
 
         [StringLength(10)]
-        public string? Phone { get; set; }
+        public override string? PhoneNumber { get; set; }
 
         [StringLength(100)]
         public string? Address { get; set; }

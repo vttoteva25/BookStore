@@ -26,7 +26,7 @@ namespace BS.ApplicationServices.Implementations
             _logger = logger;
             _context = context;
             _userManager = userManager;
-        }
+        }        
 
         public async Task<GetCustomerByNameResponse> GetCustomerByNameAsync(GetCustomerByNameRequest request)
         {
@@ -40,14 +40,15 @@ namespace BS.ApplicationServices.Implementations
                 return response;
             }
 
-            response.Customer = new()
+            response.Customer = new ()
             {
                 CustomerId = Guid.Parse(customer.Id),
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
                 Email = customer.Email,
+                Password = customer.Password,
                 Address = customer.Address,
-                Phone = customer.Phone,
+                Phone = customer.PhoneNumber,
                 RegistrationDate = DateTime.Now,
                 OrdersCount = customer.OrdersCount,
                 HasOrders = customer.HasOrders
@@ -73,8 +74,9 @@ namespace BS.ApplicationServices.Implementations
                     FirstName = customer.FirstName,
                     LastName = customer.LastName,
                     Email = customer.Email,
+                    Password = customer.Password,
                     Address = customer.Address,
-                    Phone = customer.Phone,
+                    Phone = customer.PhoneNumber,
                     RegistrationDate = DateTime.Now,
                     OrdersCount = customer.OrdersCount,
                     HasOrders = customer.HasOrders
@@ -90,19 +92,32 @@ namespace BS.ApplicationServices.Implementations
 
             try
             {
-                await _context.Customers.AddAsync(new()
+                var customer = new Customer()
                 {
-                    Id = request.Customer.CustomerId.ToString(),
+                    Id = new Guid().ToString(),
                     FirstName = request.Customer.FirstName,
                     LastName = request.Customer.LastName,
+                    UserName = request.Customer.Username,
                     Email = request.Customer.Email,
                     Address = request.Customer.Address,
-                    Phone = request.Customer.Phone,
+                    PhoneNumber = request.Customer.Phone,
                     RegistrationDate = DateTime.Now,
                     OrdersCount = request.Customer.OrdersCount,
                     HasOrders = request.Customer.HasOrders
-                });
-                await _context.SaveChangesAsync();
+                };
+
+                var createdUser = await _userManager.CreateAsync( customer, request.Customer.Password);
+
+                if (createdUser.Succeeded)
+                {
+                    var roleResult = await _userManager.AddToRoleAsync(customer, "User");
+                    if(roleResult.Succeeded)
+                    {
+                        return response;
+                    }
+                }
+
+                //await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
