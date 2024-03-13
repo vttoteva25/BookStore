@@ -38,7 +38,7 @@ namespace BS.ApplicationServices.Interfaces
         /// </summary>
         /// <param name="request">Get books request object.</param>
         /// <returns>Return list of books by order id.</returns>
-        Task<GetAllBooksByOrderIdResponse> GetBooksByOrderIdAsync(GetAllOrdersByBookIdRequest request);
+        Task<GetAllBooksByOrderIdResponse> GetBooksByOrderIdAsync(GetAllBooksByOrderIdRequest request);
 
         /// <summary>
         /// Create BookOrder.
