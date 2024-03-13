@@ -73,7 +73,16 @@ namespace BS.Data.Contexts
                 }
             };
 
-            modelBuilder.Entity<IdentityRole>().HasData(identityRoles);
+            modelBuilder.Entity<IdentityRole>()
+                .HasKey(ir => new { ir.Id });
+
+            modelBuilder.Entity<IdentityRole>()
+                .HasData(identityRoles);
+
+            modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
+            modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
+            modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
+            modelBuilder.Entity<IdentityUserToken<string>>().HasNoKey();
         }
 
     }
