@@ -1,5 +1,5 @@
 ﻿using BS.ApplicationServices.Interfaces;
-using BS.ApplicationServices.Messaging.Requests.CustomerRequests;
+using BS.ApplicationServices.Messaging.Requests.UserRequests;
 using BS.Data.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -49,7 +49,7 @@ namespace BS.WebApiServices.Helpers
                 var userId = jwtToken.Claims.First(x => x.Type == "id").Value;
 
                 // attach user to context on successful jwt validation
-                var user = userService.GetUserById(new GetUserByIdRequest(Guid.Parse(userId)))
+                var user = userService.GetUserByIdAsync(new GetUserByIdRequest(Guid.Parse(userId)))
                     .GetAwaiter().GetResult();
                 context.Items["User"] = new User() {
                     UserId = user.User.UserId,

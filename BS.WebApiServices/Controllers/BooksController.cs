@@ -1,12 +1,14 @@
-﻿
-using BS.ApplicationServices.Interfaces;
+﻿using BS.ApplicationServices.Interfaces;
 using BS.ApplicationServices.Messaging.Responses.BookResponses;
 using BS.ApplicationServices.Messaging;
 using BS.ApplicationServices.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using BS.WebApiServices.Helpers;
+
 /// <summary>
 /// Books controller.
 /// </summary>
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 [Produces("application/json")]
@@ -71,7 +73,7 @@ public class BooksController : Controller
     /// Delete book.
     /// </summary>
     /// <returns>Return null if not success.</returns>
-    [HttpPut("delete/{id}")]
+    [HttpDelete("delete/{id}")]
     [ProducesResponseType(typeof(DeleteBookResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

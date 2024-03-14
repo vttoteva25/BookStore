@@ -3,9 +3,13 @@ using BS.ApplicationServices.Messaging.Responses.OrderResponses;
 using BS.ApplicationServices.Messaging;
 using BS.ApplicationServices.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using BS.WebApiServices.Helpers;
+
+
 /// <summary>
 /// Orders controller.
 /// </summary>
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 [Produces("application/json")]
@@ -70,7 +74,7 @@ public class OrdersController : Controller
     /// Delete order.
     /// </summary>
     /// <returns>Return null if not success.</returns>
-    [HttpPut("delete/{id}")]
+    [HttpDelete("delete/{id}")]
     [ProducesResponseType(typeof(DeleteOrderResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

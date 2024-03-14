@@ -1,6 +1,6 @@
 ﻿using BS.ApplicationServices.ViewModels;
 
-namespace BS.ApplicationServices.Messaging.Responses.CustomerResponses
+namespace BS.ApplicationServices.Messaging.Responses.UserResponses
 {
     public class GetUserByIdResponse : ServiceResponseBase
     {

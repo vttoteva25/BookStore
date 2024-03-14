@@ -8,8 +8,8 @@ namespace BS.Data.Entities
         [Key]
         public required Guid OrderId { get; set; }
 
-        [ForeignKey("Customer Id")]
-        public required Guid CustomerId { get; set; }
+        [ForeignKey("User Id")]
+        public required Guid UserId { get; set; }
 
         public DateTime OrderDate { get; set; }
 
@@ -29,7 +29,7 @@ namespace BS.Data.Entities
 
         public bool IsDelivered { get; set; } = false;
 
-        public User Customer { get; set; }
+        public User User { get; set; }
 
         public ICollection<Book> Books { get; set; }
     }

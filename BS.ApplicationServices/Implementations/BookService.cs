@@ -1,18 +1,9 @@
 ﻿using BS.ApplicationServices.Interfaces;
 using BS.ApplicationServices.Messaging.Requests.BookRequests;
-using BS.ApplicationServices.Messaging.Requests.CustomerRequests;
-using BS.ApplicationServices.Messaging.Responses.AuthorResponses;
 using BS.ApplicationServices.Messaging.Responses.BookResponses;
-using BS.ApplicationServices.Messaging.Responses.CustomerResponse;
 using BS.Data.Contexts;
-using BS.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BS.ApplicationServices.Implementations
 {

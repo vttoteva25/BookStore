@@ -13,7 +13,7 @@ namespace BS.Data.Contexts
         public DbSet<Book> Books { get; set; }
 
         /// <summary>
-        /// Gets or sets customer dbset collection.
+        /// Gets or sets users dbset collection.
         /// </summary>
         public DbSet<User> Users { get; set; }
 

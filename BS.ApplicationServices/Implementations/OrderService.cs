@@ -44,7 +44,7 @@ namespace BS.ApplicationServices.Implementations
             response.Order = new()
             {
                 OrderId = order.OrderId,
-                CustomerId = order.CustomerId,
+                UserId = order.UserId,
                 OrderDate = order.OrderDate,
                 TotalAmount = order.TotalAmount,
                 PaymentMethod = order.PaymentMethod,
@@ -71,7 +71,7 @@ namespace BS.ApplicationServices.Implementations
                 response.Orders.Add(new()
                 {
                     OrderId = order.OrderId,
-                    CustomerId = order.CustomerId,
+                    UserId = order.UserId,
                     OrderDate = order.OrderDate,
                     TotalAmount = order.TotalAmount,
                     PaymentMethod = order.PaymentMethod,
@@ -94,7 +94,7 @@ namespace BS.ApplicationServices.Implementations
                 await _context.Orders.AddAsync(new()
                 {
                     OrderId = request.Order.OrderId,
-                    CustomerId = request.Order.CustomerId,
+                    UserId = request.Order.UserId,
                     OrderDate = request.Order.OrderDate,
                     TotalAmount = request.Order.TotalAmount,
                     PaymentMethod = request.Order.PaymentMethod,

@@ -2,7 +2,7 @@
 using BS.ApplicationServices.Messaging;
 using BS.ApplicationServices.Messaging.Responses.AuthorResponses;
 using BS.ApplicationServices.ViewModels;
-using Microsoft.AspNetCore.Authorization;
+using BS.WebApiServices.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BS.WebApiServices.Controllers

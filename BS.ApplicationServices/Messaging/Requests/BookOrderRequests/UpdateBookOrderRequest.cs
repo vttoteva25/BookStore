@@ -9,13 +9,16 @@ namespace BS.ApplicationServices.Messaging.Requests.BookOrderRequests
 {
     public class UpdateBookOrderRequest
     {
-        public Guid BookOrderId { get; set; }
+        public Guid BookId { get; set; }
+
+        public Guid OrderId { get; set; }
 
         public BookOrderVM? BookOrder { get; set; }
 
-        public UpdateBookOrderRequest(Guid bookOrderId, BookOrderVM bookOrder) 
+        public UpdateBookOrderRequest(Guid bookId, Guid orderId,BookOrderVM bookOrder) 
         {
-            BookOrderId = bookOrderId;
+            BookId = bookId;
+            OrderId = orderId;
             BookOrder = bookOrder;
         }
     }

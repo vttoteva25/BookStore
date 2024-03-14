@@ -4,7 +4,7 @@
     {
         public required Guid OrderId { get; set; }
 
-        public required Guid CustomerId { get; set; }
+        public required Guid UserId { get; set; }
 
         public DateTime OrderDate { get; set; }
 

@@ -1,48 +1,59 @@
 ﻿using BS.ApplicationServices.Messaging.Requests.AuthorRequests;
-using BS.ApplicationServices.Messaging.Requests.CustomerRequests;
-using BS.ApplicationServices.Messaging.Responses.CustomerResponse;
-using BS.ApplicationServices.Messaging.Responses.CustomerResponses;
+using BS.ApplicationServices.Messaging.Requests.UserRequests;
+using BS.ApplicationServices.Messaging.Responses.UserResponse;
+using BS.ApplicationServices.Messaging.Responses.UserResponses;
 
 namespace BS.ApplicationServices.Interfaces
 {
     public interface IUserService
     {
+        /// <summary>
+        /// Authenticate user by given parameters username and passwords.
+        /// </summary>
+        /// <param name="request">Get user request object.</param>
+        /// <returns>Return JWT token and user data.</returns>
         Task<AuthenticateResponse> Authenticate(AuthenticateRequest request);
-        Task<GetUserByIdResponse> GetUserById(GetUserByIdRequest request);
 
         /// <summary>
-        /// Get list with customers.
+        /// Get user by id.
         /// </summary>
-        /// <param name="request">Get customer request object.</param>
-        /// <returns>Return list with customers.</returns>
-        Task<GetAllCustomersResponse> GetCustomersAsync(GetAllCustomersRequest request);
+        /// <param name="request">Get user by id request object.</param>
+        /// <returns>Return single user by id.</returns>
+        Task<GetUserByIdResponse> GetUserByIdAsync(GetUserByIdRequest request);
 
         /// <summary>
-        /// Get customer by name.
+        /// Get list with users.
         /// </summary>
-        /// <param name="request">Get customer by request object.</param>
-        /// <returns>Return single customer by name.</returns>
-        Task<GetCustomerByNameResponse> GetCustomerByNameAsync(GetCustomerByNameRequest request);
+        /// <param name="request">Get user request object.</param>
+        /// <returns>Return list with users.</returns>
+        Task<GetAllUsersResponse> GetUsersAsync(GetAllUsersRequest request);
 
         /// <summary>
-        /// Create customer.
+        /// Get user by name.
         /// </summary>
-        /// <param name="request">Create customer request object.</param>
+        /// <param name="request">Get user by request object.</param>
+        /// <returns>Return single user by name.</returns>
+        Task<GetUserByNameResponse> GetUserByNameAsync(GetUserByNameRequest request);
+
+        /// <summary>
+        /// Create user.
+        /// </summary>
+        /// <param name="request">Create user request object.</param>
         /// <returns>Return 200 ok.</returns>
-        Task<CreateCustomerResponse> SaveAsync(CreateCustomerRequest request);
+        Task<CreateUserResponse> SaveAsync(CreateUserRequest request);
 
         /// <summary>
-        /// Update customer.
+        /// Update user.
         /// </summary>
-        /// <param name="request">Update customer request object.</param>
-        /// <returns>Return the updated customer.</returns>
-        Task<UpdateCustomerResponse> UpdateAsync(UpdateCustomerRequest request);
+        /// <param name="request">Update user request object.</param>
+        /// <returns>Return the updated user.</returns>
+        Task<UpdateUserResponse> UpdateAsync(UpdateUserRequest request);
 
         /// <summary>
-        /// Delete customer.
+        /// Delete user.
         /// </summary>
-        /// <param name="request">Delete customer request object.</param>
+        /// <param name="request">Delete user request object.</param>
         /// <returns>Return 200 ok.</returns>
-        Task<DeleteCustomerResponse> DeleteAsync(DeleteCustomerRequest request);
+        Task<DeleteUserResponse> DeleteAsync(DeleteUserRequest request);
     }
 }

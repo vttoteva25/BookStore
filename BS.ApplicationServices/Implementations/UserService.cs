@@ -1,11 +1,9 @@
 ﻿using Azure.Core;
 using BS.ApplicationServices.Interfaces;
-using BS.ApplicationServices.Messaging.Requests.CustomerRequests;
-using BS.ApplicationServices.Messaging.Responses.CustomerResponse;
-using BS.ApplicationServices.Messaging.Responses.CustomerResponses;
+using BS.ApplicationServices.Messaging.Requests.UserRequests;
+using BS.ApplicationServices.Messaging.Responses.UserResponse;
+using BS.ApplicationServices.Messaging.Responses.UserResponses;
 using BS.Data.Contexts;
-using BS.Data.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -21,7 +19,7 @@ namespace BS.ApplicationServices.Implementations
         /// Initializes a new instance of the <see cref="UserService"/> class.
         /// </summary>
         /// <param name="logger">Logger.</param>
-        /// <param name="context">Customer database context.</param>
+        /// <param name="context">User database context.</param>
         public UserService(ILogger<UserService> logger, BookStoreDbContext context,
             IJWTAuthenticationsManager jwtAuthenticationsManager)
         {
@@ -30,65 +28,65 @@ namespace BS.ApplicationServices.Implementations
             _jwtAuthenticationsManager = jwtAuthenticationsManager;
         }        
 
-        public async Task<GetCustomerByNameResponse> GetCustomerByNameAsync(GetCustomerByNameRequest request)
+        public async Task<GetUserByNameResponse> GetUserByNameAsync(GetUserByNameRequest request)
         {
-            GetCustomerByNameResponse response = new();
+            GetUserByNameResponse response = new();
 
-            var customer = await _context.Users.SingleOrDefaultAsync(x => x.FirstName == request.FirstName && x.LastName == request.LastName);
-            if (customer is null)
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.FirstName == request.FirstName && x.LastName == request.LastName);
+            if (user is null)
             {
-                _logger.LogInformation("Customer is not found with first and last name: {firstName} {lastname}", request.FirstName, request.LastName);
+                _logger.LogInformation("User is not found with first and last name: {firstName} {lastname}", request.FirstName, request.LastName);
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
                 return response;
             }
 
             response.User = new ()
             {
-                UserId = customer.UserId,
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                Email = customer.Email,
-                Address = customer.Address,
-                Phone = customer.PhoneNumber,
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Address = user.Address,
+                Phone = user.PhoneNumber,
                 RegistrationDate = DateTime.Now,
-                OrdersCount = customer.OrdersCount,
-                HasOrders = customer.HasOrders
+                OrdersCount = user.OrdersCount,
+                HasOrders = user.HasOrders
             };
 
             return response;
         }
 
-        public async Task<GetAllCustomersResponse> GetCustomersAsync(GetAllCustomersRequest request)
+        public async Task<GetAllUsersResponse> GetUsersAsync(GetAllUsersRequest request)
         {
-            GetAllCustomersResponse response = new() { Users = new() };
+            GetAllUsersResponse response = new() { Users = new() };
 
-            var customers = await _context.Users.ToListAsync();
-            if (customers is null)
+            var users = await _context.Users.ToListAsync();
+            if (users is null)
             {
                 return response;
             }
-            foreach (var customer in customers)
+            foreach (var user in users)
             {
                 response.Users.Add(new()
                 {
-                    UserId = customer.UserId,
-                    FirstName = customer.FirstName,
-                    LastName = customer.LastName,
-                    Email = customer.Email,
-                    Address = customer.Address,
-                    Phone = customer.PhoneNumber,
+                    UserId = user.UserId,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Address = user.Address,
+                    Phone = user.PhoneNumber,
                     RegistrationDate = DateTime.Now,
-                    OrdersCount = customer.OrdersCount,
-                    HasOrders = customer.HasOrders
+                    OrdersCount = user.OrdersCount,
+                    HasOrders = user.HasOrders
                 });
             }
 
             return response;
         }
 
-        public async Task<CreateCustomerResponse> SaveAsync(CreateCustomerRequest request)
+        public async Task<CreateUserResponse> SaveAsync(CreateUserRequest request)
         {
-            CreateCustomerResponse response = new();
+            CreateUserResponse response = new();
 
             try
             {
@@ -117,50 +115,50 @@ namespace BS.ApplicationServices.Implementations
             return response;
         }
 
-        public async Task<UpdateCustomerResponse> UpdateAsync(UpdateCustomerRequest request)
+        public async Task<UpdateUserResponse> UpdateAsync(UpdateUserRequest request)
         {
-            UpdateCustomerResponse response = new();
+            UpdateUserResponse response = new();
 
             try
             {
-                var customer = await _context.Users.SingleOrDefaultAsync(x => x.UserId == request.UserId);
-                if (customer is null)
+                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == request.UserId);
+                if (user is null)
                 {
-                    _logger.LogInformation("Customer is not found with id: {CustomerId}", request.UserId);
+                    _logger.LogInformation("User is not found with id: {UserId}", request.UserId);
                     response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
                     return response;
                 }
-                _context.Entry(customer).CurrentValues.SetValues(request.User);
+                _context.Entry(user).CurrentValues.SetValues(request.User);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Customer is not updated.");
+                _logger.LogError(ex, "User is not updated.");
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
                 return response;
             }
             return response;
         }
 
-        public async Task<DeleteCustomerResponse> DeleteAsync(DeleteCustomerRequest request)
+        public async Task<DeleteUserResponse> DeleteAsync(DeleteUserRequest request)
         {
-            DeleteCustomerResponse response = new();
+            DeleteUserResponse response = new();
 
             try
             {
-                var customer = await _context.Users.SingleOrDefaultAsync(x => x.UserId == request.UserId);
-                if (customer is null)
+                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == request.UserId);
+                if (user is null)
                 {
-                    _logger.LogInformation("Customer is not found with id: {CustomerId}", request.UserId);
+                    _logger.LogInformation("User is not found with id: {UserId}", request.UserId);
                     response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
                     return response;
                 }
-                _context.Users.Remove(customer);
+                _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Customer is not deleted.");
+                _logger.LogError(ex, "User is not deleted.");
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
                 return response;
             }
@@ -190,7 +188,7 @@ namespace BS.ApplicationServices.Implementations
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Customer is not deleted.");
+                _logger.LogError(ex, "User is not deleted.");
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
                 return response;
             }
@@ -198,30 +196,30 @@ namespace BS.ApplicationServices.Implementations
             return response;
         }
 
-        public async Task<GetUserByIdResponse> GetUserById(GetUserByIdRequest request)
+        public async Task<GetUserByIdResponse> GetUserByIdAsync(GetUserByIdRequest request)
         {
 
             GetUserByIdResponse response = new();
 
-            var customer = await _context.Users.SingleOrDefaultAsync(x => x.UserId == request.UserId);
-            if (customer is null)
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == request.UserId);
+            if (user is null)
             {
-                _logger.LogInformation("Customer with id: '{request.UserId}' is not found", request.UserId);
+                _logger.LogInformation("User with id: '{request.UserId}' is not found", request.UserId);
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
                 return response;
             }
 
             response.User = new()
             {
-                UserId = customer.UserId,
-                FirstName = customer.FirstName,
-                LastName = customer.LastName,
-                Email = customer.Email,
-                Address = customer.Address,
-                Phone = customer.PhoneNumber,
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Address = user.Address,
+                Phone = user.PhoneNumber,
                 RegistrationDate = DateTime.Now,
-                OrdersCount = customer.OrdersCount,
-                HasOrders = customer.HasOrders
+                OrdersCount = user.OrdersCount,
+                HasOrders = user.HasOrders
             };
 
             return response;

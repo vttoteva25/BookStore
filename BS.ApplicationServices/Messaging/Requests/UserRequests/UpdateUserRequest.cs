@@ -1,14 +1,14 @@
 ﻿using BS.ApplicationServices.ViewModels;
 
-namespace BS.ApplicationServices.Messaging.Requests.CustomerRequests
+namespace BS.ApplicationServices.Messaging.Requests.UserRequests
 {
-    public class UpdateCustomerRequest
+    public class UpdateUserRequest
     {
         public Guid UserId { get; set; }
 
         public UserVM? User { get; set; }
 
-        public UpdateCustomerRequest(Guid userId, UserVM user)
+        public UpdateUserRequest(Guid userId, UserVM user)
         {
             UserId = userId;
             User = user;

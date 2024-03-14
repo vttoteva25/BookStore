@@ -1,7 +1,7 @@
 ﻿using BS.ApplicationServices.Messaging.Requests.BookRequests;
-using BS.ApplicationServices.Messaging.Requests.CustomerRequests;
+using BS.ApplicationServices.Messaging.Requests.UserRequests;
 using BS.ApplicationServices.Messaging.Responses.BookResponses;
-using BS.ApplicationServices.Messaging.Responses.CustomerResponse;
+using BS.ApplicationServices.Messaging.Responses.UserResponse;
 using System;
 using System.Collections.Generic;
 using System.Linq;

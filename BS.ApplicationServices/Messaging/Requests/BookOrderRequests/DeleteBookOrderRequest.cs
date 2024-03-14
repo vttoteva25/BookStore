@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BS.ApplicationServices.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,11 @@ namespace BS.ApplicationServices.Messaging.Requests.BookOrderRequests
 {
     public class DeleteBookOrderRequest
     {
-        public Guid BookOrderId { get; set; }
+        public BookOrderVM BookOrder { get; set; }
 
-        public DeleteBookOrderRequest(Guid bookOrderId)
+        public DeleteBookOrderRequest(BookOrderVM bookOrder)
         {
-            BookOrderId = bookOrderId;
+            BookOrder = bookOrder;
         }
     }
 }

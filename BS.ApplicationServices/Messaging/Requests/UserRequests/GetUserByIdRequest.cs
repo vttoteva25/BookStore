@@ -1,4 +1,4 @@
-﻿namespace BS.ApplicationServices.Messaging.Requests.CustomerRequests
+﻿namespace BS.ApplicationServices.Messaging.Requests.UserRequests
 {
     public class GetUserByIdRequest
     {

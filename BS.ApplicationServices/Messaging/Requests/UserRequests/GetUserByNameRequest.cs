@@ -1,12 +1,12 @@
-﻿namespace BS.ApplicationServices.Messaging.Requests.CustomerRequests
+﻿namespace BS.ApplicationServices.Messaging.Requests.UserRequests
 {
-    public class GetCustomerByNameRequest
+    public class GetUserByNameRequest
     {
         public string? FirstName { get; set; }
 
         public string? LastName { get; set; }
 
-        public GetCustomerByNameRequest(string? firstName, string? lastName)
+        public GetUserByNameRequest(string? firstName, string? lastName)
         {
             FirstName = firstName;
             LastName = lastName;

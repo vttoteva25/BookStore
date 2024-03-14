@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BS.ApplicationServices.Messaging.Requests.CustomerRequests
+namespace BS.ApplicationServices.Messaging.Requests.UserRequests
 {
     public class AuthenticateRequest
     {
