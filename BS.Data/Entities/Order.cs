@@ -29,7 +29,7 @@ namespace BS.Data.Entities
 
         public bool IsDelivered { get; set; } = false;
 
-        public Customer Customer { get; set; }
+        public User Customer { get; set; }
 
         public ICollection<Book> Books { get; set; }
     }

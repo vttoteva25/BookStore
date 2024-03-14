@@ -1,12 +1,12 @@
 ﻿namespace BS.ApplicationServices.Messaging.Requests.CustomerRequests
 {
-    public class DeleteCustomerRequest
+    public class GetUserByIdRequest
     {
         public Guid UserId { get; set; }
-        
-        public DeleteCustomerRequest(Guid userId)
+
+        public GetUserByIdRequest(Guid userId)
         {
-            this.UserId = userId;
+            UserId = userId;
         }
     }
 }

@@ -76,7 +76,7 @@ namespace BS.WebApiServices.Controllers
         /// Delete author.
         /// </summary>
         /// <returns>Return null if not success.</returns>
-        [HttpPut("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         [ProducesResponseType(typeof(DeleteAuthorResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

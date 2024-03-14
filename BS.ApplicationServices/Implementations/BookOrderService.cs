@@ -22,28 +22,7 @@ namespace BS.ApplicationServices.Implementations
             _logger = logger;
             _context = context;
         }
-        public async Task<GetBookOrderByIdResponse> GetBookOrderByIdAsync(GetBookOrderByIdRequest request)
-        {
-            GetBookOrderByIdResponse response = new();
-
-            var bookOrder = await _context.BooksOrders.SingleOrDefaultAsync(x => x.BookOrderId == request.BookOrderId);
-            if (bookOrder is null)
-            {
-                _logger.LogInformation("BookOrder is not found with id: {bookOrderId}", request.BookOrderId);
-                response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
-                return response;
-            }
-
-            response.BookOrder = new()
-            {
-                BookOrderId = bookOrder.OrderId,
-                BookId = bookOrder.BookId,
-                OrderId = bookOrder.OrderId
-            };
-
-            return response;
-        }
-
+        
         public async Task<GetAllOrdersByBookIdResponse> GetOrdersByBookIdAsync(GetAllOrdersByBookIdRequest request)
         {
             GetAllOrdersByBookIdResponse response = new();
@@ -117,20 +96,20 @@ namespace BS.ApplicationServices.Implementations
         {
             GetAllBookOrdersResponse response = new() { BookOrders = new() };
 
-            var bookOrders = await _context.BooksOrders.ToListAsync();
-            if (bookOrders is null)
-            {
-                return response;
-            }
-            foreach (var bookOrder in bookOrders)
-            {
-                response.BookOrders.Add(new()
-                {
-                    BookOrderId = bookOrder.OrderId,
-                    BookId = bookOrder.BookId,
-                    OrderId = bookOrder.OrderId
-                });
-            }
+            //var bookOrders = await _context.BooksOrders.ToListAsync();
+            //if (bookOrders is null)
+            //{
+            //    return response;
+            //}
+            //foreach (var bookOrder in bookOrders)
+            //{
+            //    response.BookOrders.Add(new()
+            //    {
+            //        BookOrderId = bookOrder.OrderId,
+            //        BookId = bookOrder.BookId,
+            //        OrderId = bookOrder.OrderId
+            //    });
+            //}
 
             return response;
         }
@@ -139,22 +118,22 @@ namespace BS.ApplicationServices.Implementations
         {
             CreateBookOrderResponse response = new();
 
-            try
-            {
-                await _context.BooksOrders.AddAsync(new()
-                {
-                    BookOrderId = request.BookOrder.BookOrderId,
-                    BookId = request.BookOrder.BookId,
-                    OrderId = request.BookOrder.OrderId
-                });
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "BookOrder is not save.");
-                response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
-                return response;
-            }
+            //try
+            //{
+            //    await _context.BooksOrders.AddAsync(new()
+            //    {
+            //        BookOrderId = request.BookOrder.BookOrderId,
+            //        BookId = request.BookOrder.BookId,
+            //        OrderId = request.BookOrder.OrderId
+            //    });
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex, "BookOrder is not save.");
+            //    response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
+            //    return response;
+            //}
 
             return response;
         }
@@ -163,48 +142,49 @@ namespace BS.ApplicationServices.Implementations
         {
             UpdateBookOrderResponse response = new();
 
-            try
-            {
-                var bookOrder = await _context.BooksOrders.SingleOrDefaultAsync(x => x.BookOrderId == request.BookOrderId);
-                if (bookOrder is null)
-                {
-                    _logger.LogInformation("BookOrder is not found with id: {BookOrderId}", request.BookOrderId);
-                    response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
-                    return response;
-                }
-                _context.Entry(bookOrder).CurrentValues.SetValues(request.BookOrder);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "BookOrder is not updated.");
-                response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
-                return response;
-            }
+            //try
+            //{
+            //    var bookOrder = await _context.BooksOrders.SingleOrDefaultAsync(x => x.BookOrderId == request.BookOrderId);
+            //    if (bookOrder is null)
+            //    {
+            //        _logger.LogInformation("BookOrder is not found with id: {BookOrderId}", request.BookOrderId);
+            //        response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
+            //        return response;
+            //    }
+            //    _context.Entry(bookOrder).CurrentValues.SetValues(request.BookOrder);
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex, "BookOrder is not updated.");
+            //    response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
+            //    return response;
+            //}
             return response;
         }
         public async Task<DeleteBookOrderResponse> DeleteAsync(DeleteBookOrderRequest request)
         {
             DeleteBookOrderResponse response = new();
 
-            try
-            {
-                var bookOrder = await _context.BooksOrders.SingleOrDefaultAsync(x => x.BookOrderId == request.BookOrderId);
-                if (bookOrder is null)
-                {
-                    _logger.LogInformation("BookOrder is not found with id: {BookOrderId}", request.BookOrderId);
-                    response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
-                    return response;
-                }
-                _context.BooksOrders.Remove(bookOrder);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "BookOrder is not deleted.");
-                response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
-                return response;
-            }
+            //try
+            //{
+            //    var bookOrder = await _context.BooksOrders.SingleOrDefaultAsync(x => x.BookOrderId == request.BookOrderId);
+            //    if (bookOrder is null)
+            //    {
+            //        _logger.LogInformation("BookOrder is not found with id: {BookOrderId}", request.BookOrderId);
+            //        response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
+            //        return response;
+            //    }
+            //    _context.BooksOrders.Remove(bookOrder);
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError(ex, "BookOrder is not deleted.");
+            //    response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
+            //    return response;
+            //}
+
             return response;
         }
 

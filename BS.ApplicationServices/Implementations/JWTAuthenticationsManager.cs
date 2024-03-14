@@ -11,7 +11,7 @@ namespace BS.ApplicationServices.Implementations
     public class JWTAuthenticationsManager : IJWTAuthenticationsManager
     {
         private readonly IConfiguration configuration;
-        private readonly SymmetricSecurityKey key;
+        private readonly string _secret;
 
         /// <summary>
         /// Initializes a new instance of the JWTAuthenticationsManager class.
@@ -20,35 +20,27 @@ namespace BS.ApplicationServices.Implementations
         public JWTAuthenticationsManager(IConfiguration config)
         {
             this.configuration = config;
-            this.key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]));
+            this._secret = configuration["AppSettings:Secret"];
         }
 
         /// <summary>
         /// Creates a JWT token for the specified customer.
         /// </summary>
-        /// <param name="customer">The customer for whom the token is generated.</param>
+        /// <param name="user">The customer for whom the token is generated.</param>
         /// <returns>Returns the generated JWT token.</returns>
-        public string Authenticate(Customer customer)
+        public string GenerateJwtToken(User user)
         {
-            var claims = new List<Claim>()
-            {
-                new Claim(JwtRegisteredClaimNames.Email, customer.Email),
-                new Claim(JwtRegisteredClaimNames.GivenName, customer.UserName)
-            };
-
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var tokenDesc = new SecurityTokenDescriptor()
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(7),
-                SigningCredentials = credentials,
-                Issuer = configuration["JWT:Issuer"],
-                Audience = configuration["JWT:Audience"]
-            };
-
+            // generate token that is valid for 7 days
             var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDesc);
-
+            var key = Encoding.ASCII.GetBytes(_secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] 
+                { new Claim("id", user.UserId.ToString()), new Claim("username", user.Username.ToString()) }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }       
     }

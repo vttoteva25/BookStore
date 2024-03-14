@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BS.Data.Contexts
 {
-    public class BookStoreDbContext : IdentityDbContext<Customer>
+    public class BookStoreDbContext : DbContext
     {
         /// <summary>
         /// Gets or sets book dbset collection.
@@ -15,7 +15,7 @@ namespace BS.Data.Contexts
         /// <summary>
         /// Gets or sets customer dbset collection.
         /// </summary>
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<User> Users { get; set; }
 
         /// <summary>
         /// Gets or sets order dbset collection.
@@ -31,6 +31,16 @@ namespace BS.Data.Contexts
         /// Gets or sets authors dbset collection.
         /// </summary>
         public DbSet<Author> Authors { get; set; }
+
+        // <summary>
+        /// Gets or sets roles dbset collection.
+        /// </summary>
+        public DbSet<Role> Roles { get; set; }
+
+        // <summary>
+        /// Gets or sets users and roles dbset collection.
+        /// </summary>
+        public DbSet<UserRole> UsersRoles { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BookStoreDbContext"/> class.
@@ -57,29 +67,40 @@ namespace BS.Data.Contexts
                 );
 
             modelBuilder.Entity<BookOrder>()
-                .HasKey(bo => new { bo.BookId, bo.OrderId });
+               .HasKey(bo => new { bo.BookId, bo.OrderId });
 
-            List<IdentityRole> identityRoles = new List<IdentityRole>()
-            {
-                new IdentityRole()
-                {
-                    Name = "Admin",
-                    NormalizedName = "ADMIN"
-                },
-                new IdentityRole()
-                {
-                    Name = "User",
-                    NormalizedName = "USER"
-                }
-            };         
+            modelBuilder.Entity<User>()
+                 .HasMany(b => b.Roles)
+                 .WithMany(o => o.Users)
+                 .UsingEntity<UserRole>(
+                     j => j
+                         .HasOne(bo => bo.Role)
+                         .WithMany()
+                         .HasForeignKey(bo => bo.RoleId),
+                     j => j
+                         .HasOne(bo => bo.User)
+                         .WithMany()
+                         .HasForeignKey(bo => bo.UserId)
+                 );
 
-            modelBuilder.Entity<IdentityRole>()
-                .HasData(identityRoles);
+            modelBuilder.Entity<UserRole>()
+                .HasKey(bo => new { bo.UserId, bo.RoleId });
 
-            modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
-            modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
-            modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
-            modelBuilder.Entity<IdentityUserToken<string>>().HasNoKey();
+
+            modelBuilder.Entity<Role>().HasData(
+               new Role
+               {
+                   RoleId = Guid.Parse("111e16d2-2a45-4977-a963-0fd740fbacb8"),
+                   RoleName = "Admin"
+               });
+
+            modelBuilder.Entity<Role>().HasData(
+              new Role
+              {
+                  RoleId = Guid.Parse("e89e16d2-2a45-4977-a963-0fd740fbacb8"),
+                  RoleName = "User"
+              });
+                   
         }
 
     }

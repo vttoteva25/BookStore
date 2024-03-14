@@ -4,6 +4,6 @@ namespace BS.ApplicationServices.Interfaces
 {
     public interface IJWTAuthenticationsManager
     {
-        string? Authenticate(Customer customer);
+        string? GenerateJwtToken(User user);
     }
 }

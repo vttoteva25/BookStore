@@ -17,14 +17,7 @@ namespace BS.ApplicationServices.Interfaces
         /// </summary>
         /// <param name="request">Get BookOrder request object.</param>
         /// <returns>Return list with BookOrder.</returns>
-        Task<GetAllBookOrdersResponse> GetBookOrdersAsync(GetAllBookOrdersRequest request);
-
-        /// <summary>
-        /// Get BookOrder by id.
-        /// </summary>
-        /// <param name="request">Get BookOrder by request object.</param>
-        /// <returns>Return single BookOrder by id.</returns>
-        Task<GetBookOrderByIdResponse> GetBookOrderByIdAsync(GetBookOrderByIdRequest request);
+        Task<GetAllBookOrdersResponse> GetBookOrdersAsync(GetAllBookOrdersRequest request);       
 
         /// <summary>
         /// Get orders by book id.

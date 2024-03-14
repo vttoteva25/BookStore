@@ -2,6 +2,7 @@ using BS.ApplicationServices.Implementations;
 using BS.ApplicationServices.Interfaces;
 using BS.Data.Contexts;
 using BS.Data.Entities;
+using BS.WebApiServices.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -28,12 +29,14 @@ try
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnectionString");
     builder.Services.AddDbContext<BookStoreDbContext>(options => options.UseSqlServer(connectionString));
 
+    builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
     builder.Services.AddControllers();
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddScoped<IAuthorService, AuthorService>();
     builder.Services.AddScoped<IBookService, BookService>();
-    builder.Services.AddScoped<ICustomerService, CustomerService>();
+    builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IOrderService, OrderService>();
     builder.Services.AddScoped<IJWTAuthenticationsManager, JWTAuthenticationsManager>();
 
@@ -68,39 +71,39 @@ try
     });
 
     // Custom options for  Identity credentials
-    builder.Services.AddIdentity<Customer, IdentityRole>(options =>
-    {
-        options.Password.RequireDigit = true;
-        options.Password.RequireLowercase = true;
-        options.Password.RequireUppercase = true;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequiredLength = 4;
-        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/";
-    })
-       .AddEntityFrameworkStores<BookStoreDbContext>();
+    //builder.Services.AddIdentity<User, IdentityRole>(options =>
+    //{
+    //    options.Password.RequireDigit = true;
+    //    options.Password.RequireLowercase = true;
+    //    options.Password.RequireUppercase = true;
+    //    options.Password.RequireNonAlphanumeric = false;
+    //    options.Password.RequiredLength = 4;
+    //    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/";
+    //})
+    //   .AddEntityFrameworkStores<BookStoreDbContext>();
 
-    builder.Services.AddAuthentication(options =>
-    {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    //});
-}).AddJwtBearer(o =>
-{
-    o.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey
-        (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = false,
-        ValidateIssuerSigningKey = true
-    };
-});
+//    builder.Services.AddAuthentication(options =>
+//    {
+//        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+//        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+//        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+//    //});
+//}).AddJwtBearer(o =>
+//{
+//    o.TokenValidationParameters = new TokenValidationParameters
+//    {
+//        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+//        ValidAudience = builder.Configuration["Jwt:Audience"],
+//        IssuerSigningKey = new SymmetricSecurityKey
+//        (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+//        ValidateIssuer = true,
+//        ValidateAudience = true,
+//        ValidateLifetime = false,
+//        ValidateIssuerSigningKey = true
+//    };
+//});
 
-builder.Services.AddSerilog();
+    builder.Services.AddSerilog();
 
     builder.Services.AddAuthorization();
 
@@ -112,6 +115,8 @@ builder.Services.AddSerilog();
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+
+    app.UseMiddleware<JwtMiddleware>();
 
     app.UseAuthentication();
     app.UseAuthorization();

@@ -1,17 +1,17 @@
-﻿using BS.ApplicationServices.ViewModels.CustomerVM;
+﻿using BS.ApplicationServices.ViewModels;
 
 namespace BS.ApplicationServices.Messaging.Requests.CustomerRequests
 {
     public class UpdateCustomerRequest
     {
-        public Guid CustomerId { get; set; }
+        public Guid UserId { get; set; }
 
-        public CustomerVM? Customer { get; set; }
+        public UserVM? User { get; set; }
 
-        public UpdateCustomerRequest(Guid customerId, CustomerVM customer)
+        public UpdateCustomerRequest(Guid userId, UserVM user)
         {
-            CustomerId = customerId;
-            Customer = customer;
+            UserId = userId;
+            User = user;
         }
     }
 }

@@ -1,12 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BS.Data.Entities
 {
     public class BookOrder
     {
-        [Key]
-        public Guid BookOrderId { get; set; }
 
         [ForeignKey("Book Id")]
         public required Guid BookId { get; set; }

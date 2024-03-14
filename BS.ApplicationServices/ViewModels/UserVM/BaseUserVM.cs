@@ -1,6 +1,6 @@
-﻿namespace BS.ApplicationServices.ViewModels.CustomerVM
+﻿namespace BS.ApplicationServices.ViewModels
 {
-    public class BaseCustomerVM
+    public class BaseUserVM
     {
         public required string FirstName { get; set; }
 

@@ -1,17 +1,15 @@
 ﻿using BS.ApplicationServices.Messaging.Requests.AuthorRequests;
 using BS.ApplicationServices.Messaging.Requests.CustomerRequests;
-using BS.ApplicationServices.Messaging.Responses.AuthorResponses;
 using BS.ApplicationServices.Messaging.Responses.CustomerResponse;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BS.ApplicationServices.Messaging.Responses.CustomerResponses;
 
 namespace BS.ApplicationServices.Interfaces
 {
-    public interface ICustomerService
+    public interface IUserService
     {
+        Task<AuthenticateResponse> Authenticate(AuthenticateRequest request);
+        Task<GetUserByIdResponse> GetUserById(GetUserByIdRequest request);
+
         /// <summary>
         /// Get list with customers.
         /// </summary>
