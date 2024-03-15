@@ -7,6 +7,7 @@ using System;
 using Azure;
 using BS.ApplicationServices.Messaging.Requests.AuthorRequests;
 using BS.ApplicationServices.Messaging.Responses.AuthorResponses;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests.CreateAuthor;
 
 namespace BS.ApplicationServices.Implementations
 {

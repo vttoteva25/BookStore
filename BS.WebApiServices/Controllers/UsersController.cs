@@ -3,9 +3,8 @@ using BS.ApplicationServices.Messaging.Responses.UserResponse;
 using BS.ApplicationServices.Messaging;
 using Microsoft.AspNetCore.Mvc;
 using BS.ApplicationServices.ViewModels;
-using BS.ApplicationServices.Messaging.Requests.UserRequests;
 using BS.WebApiServices.Helpers;
-
+using BS.ApplicationServices.Messaging.Requests.UserRequests.AuthenticateUser;
 
 /// <summary>
 /// Users controller.
@@ -17,23 +16,26 @@ using BS.WebApiServices.Helpers;
 public class UsersController : Controller
 {
     private readonly IUserService _service;
-    private readonly IJWTAuthenticationsManager _authenticationManager;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="UsersController"/> class.
     /// </summary>
     /// <param name="service">User service.</param>
-    public UsersController(IUserService service, IJWTAuthenticationsManager authenticationManager)
+    public UsersController(IUserService service)
     {
         _service = service;
-        _authenticationManager = authenticationManager;
     }
 
+    /// <summary>
+    /// Authenticate user by username and passwors.
+    /// </summary>
+    /// <returns>Return list of all users.</returns>
     [HttpPost("authenticate")]
-    public async Task<IActionResult> AuthenticateAsync(AuthenticateRequest request) =>Ok(await _service.Authenticate(request));
+    public async Task<IActionResult> AuthenticateAsync(AuthenticateUserRequest request) => Ok(await _service.Authenticate(request));
 
 
     /// <summary>
-    /// Get users list.
+    /// Get all users list.
     /// </summary>
     /// <returns>Return list of all users.</returns>
     [Authorize]
@@ -59,7 +61,7 @@ public class UsersController : Controller
     public async Task<IActionResult> Get([FromRoute] string firstName, [FromRoute] string lastName) => Ok(await _service.GetUserByNameAsync(new(firstName, lastName)));
 
     /// <summary>
-    /// Save user.
+    /// Create user.
     /// </summary>
     /// <returns>Return null if not success.</returns>
     [HttpPost]
@@ -70,7 +72,7 @@ public class UsersController : Controller
     public async Task<IActionResult> CreateUser([FromBody] RegisterUserVM model) => Ok(await _service.SaveAsync(new(model)));
 
     /// <summary>
-    /// Update user.
+    /// Update user data.
     /// </summary>
     /// <returns>Return null if not success.</returns>
     [Authorize]

@@ -1,5 +1,6 @@
 ﻿using BS.ApplicationServices.Interfaces;
 using BS.ApplicationServices.Messaging.Requests.UserRequests;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.GetUserById;
 using BS.Data.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

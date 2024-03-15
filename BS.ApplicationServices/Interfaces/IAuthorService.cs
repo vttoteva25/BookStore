@@ -1,4 +1,5 @@
 ﻿using BS.ApplicationServices.Messaging.Requests.AuthorRequests;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests.CreateAuthor;
 using BS.ApplicationServices.Messaging.Responses.AuthorResponses;
 using System;
 using System.Collections.Generic;

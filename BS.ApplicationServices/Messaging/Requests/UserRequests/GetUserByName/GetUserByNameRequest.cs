@@ -1,4 +1,4 @@
-﻿namespace BS.ApplicationServices.Messaging.Requests.UserRequests
+﻿namespace BS.ApplicationServices.Messaging.Requests.UserRequests.GetUserByName
 {
     public class GetUserByNameRequest
     {

@@ -2,7 +2,9 @@ using BS.ApplicationServices.Implementations;
 using BS.ApplicationServices.Interfaces;
 using BS.Data.Contexts;
 using BS.Data.Entities;
+using BS.WebApiServices.Filters;
 using BS.WebApiServices.Helpers;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -70,40 +72,12 @@ try
         });
     });
 
-    // Custom options for  Identity credentials
-    //builder.Services.AddIdentity<User, IdentityRole>(options =>
-    //{
-    //    options.Password.RequireDigit = true;
-    //    options.Password.RequireLowercase = true;
-    //    options.Password.RequireUppercase = true;
-    //    options.Password.RequireNonAlphanumeric = false;
-    //    options.Password.RequiredLength = 4;
-    //    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+/";
-    //})
-    //   .AddEntityFrameworkStores<BookStoreDbContext>();
-
-//    builder.Services.AddAuthentication(options =>
-//    {
-//        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-//    //});
-//}).AddJwtBearer(o =>
-//{
-//    o.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-//        ValidAudience = builder.Configuration["Jwt:Audience"],
-//        IssuerSigningKey = new SymmetricSecurityKey
-//        (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = false,
-//        ValidateIssuerSigningKey = true
-//    };
-//});
-
+    
     builder.Services.AddSerilog();
+
+    builder.Services.AddControllersWithViews(options =>
+      options.Filters.Add<ApiExceptionFilterAttribute>())
+          .AddFluentValidation(x => x.AutomaticValidationEnabled = false);
 
     builder.Services.AddAuthorization();
 

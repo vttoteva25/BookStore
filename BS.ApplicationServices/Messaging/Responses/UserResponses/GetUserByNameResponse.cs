@@ -4,7 +4,7 @@ namespace BS.ApplicationServices.Messaging.Responses.UserResponse
 {
     public class GetUserByNameResponse : ServiceResponseBase
     {
-        public UserVM? User { get; set; }
+        public List<UserVM>? Users { get; set; }
 
     }
 }
