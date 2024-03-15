@@ -10,7 +10,6 @@ using BS.ApplicationServices.Messaging.Responses.UserResponse;
 using BS.ApplicationServices.Messaging.Responses.UserResponses;
 using BS.ApplicationServices.ViewModels;
 using BS.Data.Contexts;
-using BS.Data.Exceptions;
 using BS.Data.Helpers;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +49,7 @@ namespace BS.ApplicationServices.Implementations
             GetUserByNameResponse response = new();
 
             var users = await _context.Users.Where(x => x.FirstName == request.FirstName && x.LastName == request.LastName).ToListAsync();
-            if (users is null)
+            if (!(users?.Any() ?? false))
             {
                 _logger.LogInformation("User is not found with first and last name: {firstName} {lastname}", request.FirstName, request.LastName);
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;

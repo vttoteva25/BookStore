@@ -1,11 +1,9 @@
-﻿using BS.ApplicationServices.Messaging.Requests.AuthorRequests;
-using BS.ApplicationServices.Messaging.Requests.AuthorRequests.CreateAuthor;
+﻿using BS.ApplicationServices.Messaging.Requests.AuthorRequests.CreateAuthor;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests.DeleteAuthor;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests.GetAllAuthors;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests.GetAuthorByName;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests.UpdateAuthor;
 using BS.ApplicationServices.Messaging.Responses.AuthorResponses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BS.ApplicationServices.Interfaces
 {
@@ -23,7 +21,7 @@ namespace BS.ApplicationServices.Interfaces
         /// </summary>
         /// <param name="request">Get title by request object.</param>
         /// <returns>Return single author by title.</returns>
-        Task<GetAuthortByNameResponse> GetAuthorByNameAsync(GetAuthortByNameRequest request);
+        Task<GetAuthortByNameResponse> GetAuthorByNameAsync(GetAuthorByNameRequest request);
 
         /// <summary>
         /// Create author.

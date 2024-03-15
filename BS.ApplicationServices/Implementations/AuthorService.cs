@@ -2,12 +2,14 @@
 using BS.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
-using System;
-using Azure;
-using BS.ApplicationServices.Messaging.Requests.AuthorRequests;
 using BS.ApplicationServices.Messaging.Responses.AuthorResponses;
 using BS.ApplicationServices.Messaging.Requests.AuthorRequests.CreateAuthor;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests.DeleteAuthor;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests.GetAllAuthors;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests.UpdateAuthor;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests.GetAuthorByName;
+using BS.Data.Exceptions;
+using BS.ApplicationServices.ViewModels;
 
 namespace BS.ApplicationServices.Implementations
 {
@@ -54,19 +56,29 @@ namespace BS.ApplicationServices.Implementations
             return response;
         }
 
-        public async Task<GetAuthortByNameResponse> GetAuthorByNameAsync(GetAuthortByNameRequest request)
+        public async Task<GetAuthortByNameResponse> GetAuthorByNameAsync(GetAuthorByNameRequest request)
         {
+            var validator = new GetAuthorByNameRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("GetAuthor", string.Join("/n", validRes.Errors));
+            }
+
             GetAuthortByNameResponse response = new();
 
-            var author = await _context.Authors.SingleOrDefaultAsync(x => x.FirstName == request.FirstName && x.LastName == request.LastName);
-            if (author is null)
+            var authors = await _context.Authors.Where(x => x.FirstName == request.FirstName && 
+                            (string.IsNullOrEmpty(x.LastName) ? true : x.LastName == request.LastName)).ToListAsync();
+
+            if (!(authors?.Any() ?? false))
             {
                 _logger.LogInformation("Author is not found with first and last name: {firstName} {lastname}", request.FirstName, request.LastName);
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
                 return response;
             }
 
-            response.Author = new()
+            response.Authors = authors.Select(author 
+                => new AuthorVM()
             {
                 AuthorId = author.AuthorId,
                 FirstName = author.FirstName,
@@ -76,13 +88,20 @@ namespace BS.ApplicationServices.Implementations
                 WrittenBooksCount = author.WrittenBooksCount,
                 IsActiveNow = author.IsActiveNow,
                 Description = author.Description
-            };
+            })
+                .ToList();
 
             return response;
         }
 
         public async Task<CreateAuthorResponse> SaveAsync(CreateAuthorRequest request)
         {
+            var validator = new CreateAuthorRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("CreateAuthor", string.Join("/n", validRes.Errors));
+            }
             CreateAuthorResponse response = new();
 
             try
@@ -109,8 +128,16 @@ namespace BS.ApplicationServices.Implementations
 
             return response;
         }
+
         public async Task<UpdateAuthorResponse> UpdateAsync(UpdateAuthorRequest request)
         {
+            var validator = new UpdateAuthorRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("UpdateAuthor", string.Join("/n", validRes.Errors));
+            }
+
             UpdateAuthorResponse response = new();
 
             try
@@ -136,6 +163,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<DeleteAuthorResponse> DeleteAsync(DeleteAuthorRequest request)
         {
+            var validator = new DeleteAuthorRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("GetAuthor", string.Join("/n", validRes.Errors));
+            }
+
             DeleteAuthorResponse response = new();
 
             try

@@ -4,6 +4,6 @@ namespace BS.ApplicationServices.Messaging.Responses.AuthorResponses
 {
     public class GetAuthortByNameResponse : ServiceResponseBase
     {
-        public AuthorVM? Author { get; set; }
+        public List<AuthorVM>? Authors { get; set; }
     }
 }
