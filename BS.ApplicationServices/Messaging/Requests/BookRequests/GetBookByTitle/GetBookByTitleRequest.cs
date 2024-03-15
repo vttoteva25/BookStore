@@ -1,4 +1,4 @@
-﻿namespace BS.ApplicationServices.Messaging.Requests.BookRequests
+﻿namespace BS.ApplicationServices.Messaging.Requests.BookRequests.GetBookByTitle
 {
     public class GetBookByTitleRequest
     {

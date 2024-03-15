@@ -1,10 +1,10 @@
 ﻿using BS.ApplicationServices.ViewModels;
 
-namespace BS.ApplicationServices.Messaging.Requests.BookRequests
+namespace BS.ApplicationServices.Messaging.Requests.BookRequests.UpdateBook
 {
     public class UpdateBookRequest
     {
-        public Guid BookId { get; set;}
+        public Guid BookId { get; set; }
 
         public BookVM Book { get; set; }
 

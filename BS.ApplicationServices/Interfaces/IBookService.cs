@@ -1,7 +1,11 @@
-﻿using BS.ApplicationServices.Messaging.Requests.BookRequests;
-using BS.ApplicationServices.Messaging.Requests.UserRequests;
+﻿using BS.ApplicationServices.Messaging.Requests.BookRequests.CreateBook;
+using BS.ApplicationServices.Messaging.Requests.BookRequests.DeleteBook;
+using BS.ApplicationServices.Messaging.Requests.BookRequests.GetAllBooks;
+using BS.ApplicationServices.Messaging.Requests.BookRequests.GetBookByTitle;
+using BS.ApplicationServices.Messaging.Requests.BookRequests.UpdateBook;
+using BS.ApplicationServices.Messaging.Requests.CustomerRequests;
 using BS.ApplicationServices.Messaging.Responses.BookResponses;
-using BS.ApplicationServices.Messaging.Responses.UserResponse;
+using BS.ApplicationServices.Messaging.Responses.CustomerResponse;
 using System;
 using System.Collections.Generic;
 using System.Linq;

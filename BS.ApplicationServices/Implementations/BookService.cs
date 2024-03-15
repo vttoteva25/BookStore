@@ -1,7 +1,12 @@
 ﻿using BS.ApplicationServices.Interfaces;
-using BS.ApplicationServices.Messaging.Requests.BookRequests;
+using BS.ApplicationServices.Messaging.Requests.BookRequests.CreateBook;
+using BS.ApplicationServices.Messaging.Requests.BookRequests.DeleteBook;
+using BS.ApplicationServices.Messaging.Requests.BookRequests.GetAllBooks;
+using BS.ApplicationServices.Messaging.Requests.BookRequests.GetBookByTitle;
+using BS.ApplicationServices.Messaging.Requests.BookRequests.UpdateBook;
 using BS.ApplicationServices.Messaging.Responses.BookResponses;
 using BS.Data.Contexts;
+using BS.Data.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -24,6 +29,13 @@ namespace BS.ApplicationServices.Implementations
         }
         public async Task<GetBookByTitleResponse> GetBookByTitleAsync(GetBookByTitleRequest request)
         {
+            var validator = new GetBookByTitleRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("GetBookByTitle", string.Join("/n", validRes.Errors));
+            }
+
             GetBookByTitleResponse response = new();
 
             var book = await _context.Books.SingleOrDefaultAsync(x => x.Title == request.Title);
@@ -82,6 +94,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<CreateBookResponse> SaveAsync(CreateBookRequest request)
         {
+            var validator = new CreateBookRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("CreateBook", string.Join("/n", validRes.Errors));
+            }
+
             CreateBookResponse response = new();
 
             try
@@ -113,6 +132,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<UpdateBookResponse> UpdateAsync(UpdateBookRequest request)
         {
+            var validator = new UpdateBookRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("UpdateBook", string.Join("/n", validRes.Errors));
+            }
+
             UpdateBookResponse response = new();
 
             try
@@ -138,6 +164,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<DeleteBookResponse> DeleteAsync(DeleteBookRequest request)
         {
+            var validator = new DeleteBookRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("DeleteBook", string.Join("/n", validRes.Errors));
+            }
+
             DeleteBookResponse response = new();
 
             try

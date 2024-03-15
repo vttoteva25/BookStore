@@ -1,5 +1,4 @@
 ﻿using BS.ApplicationServices.Interfaces;
-using BS.ApplicationServices.Messaging.Requests.AuthorRequests.GetAuthorByName;
 using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.CreateBookOrder;
 using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.DeleteBookOrder;
 using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.GetAllBooksByOrderId;
