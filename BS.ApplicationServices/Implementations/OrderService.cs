@@ -1,16 +1,13 @@
 ﻿using BS.ApplicationServices.Interfaces;
-using BS.ApplicationServices.Messaging.Requests.OrderRequests;
-using BS.ApplicationServices.Messaging.Responses.BookResponses;
+using BS.ApplicationServices.Messaging.Requests.OrderRequests.CreateOrder;
+using BS.ApplicationServices.Messaging.Requests.OrderRequests.DeleteOrder;
+using BS.ApplicationServices.Messaging.Requests.OrderRequests.GetOrderById;
+using BS.ApplicationServices.Messaging.Requests.OrderRequests.UpdateOrder;
 using BS.ApplicationServices.Messaging.Responses.OrderResponses;
 using BS.Data.Contexts;
-using BS.Data.Entities;
+using BS.Data.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BS.ApplicationServices.Implementations
 {
@@ -31,6 +28,13 @@ namespace BS.ApplicationServices.Implementations
         }
         public async Task<GetOrderByIdResponse> GetOrderByIdAsync(GetOrderByIdRequest request)
         {
+            var validator = new GetOrderByIdRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("GetOrderById", string.Join("/n", validRes.Errors));
+            }
+
             GetOrderByIdResponse response = new();
 
             var order = await _context.Orders.SingleOrDefaultAsync(x => x.OrderId == request.OrderId);
@@ -87,6 +91,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<CreateOrderResponse> SaveAsync(CreateOrderRequest request)
         {
+            var validator = new CreateOrderRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("CreateOrder", string.Join("/n", validRes.Errors));
+            }
+
             CreateOrderResponse response = new();
 
             try
@@ -117,6 +128,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<UpdateOrderResponse> UpdateAsync(UpdateOrderRequest request)
         {
+            var validator = new UpdateOrderRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("UpdateOrder", string.Join("/n", validRes.Errors));
+            }
+
             UpdateOrderResponse response = new();
 
             try
@@ -142,6 +160,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<DeleteOrderResponse> DeleteAsync(DeleteOrderRequest request)
         {
+            var validator = new DeleteOrderRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("DeleteOrder", string.Join("/n", validRes.Errors));
+            }
+
             DeleteOrderResponse response = new();
 
             try

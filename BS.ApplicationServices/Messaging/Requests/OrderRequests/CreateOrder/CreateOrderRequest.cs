@@ -1,6 +1,6 @@
 ﻿using BS.ApplicationServices.ViewModels;
 
-namespace BS.ApplicationServices.Messaging.Requests.OrderRequests
+namespace BS.ApplicationServices.Messaging.Requests.OrderRequests.CreateOrder
 {
     public class CreateOrderRequest
     {

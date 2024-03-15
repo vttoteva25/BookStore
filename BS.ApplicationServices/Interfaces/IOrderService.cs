@@ -1,5 +1,8 @@
 ﻿using BS.ApplicationServices.Messaging.Requests.BookRequests;
-using BS.ApplicationServices.Messaging.Requests.OrderRequests;
+using BS.ApplicationServices.Messaging.Requests.OrderRequests.CreateOrder;
+using BS.ApplicationServices.Messaging.Requests.OrderRequests.DeleteOrder;
+using BS.ApplicationServices.Messaging.Requests.OrderRequests.GetOrderById;
+using BS.ApplicationServices.Messaging.Requests.OrderRequests.UpdateOrder;
 using BS.ApplicationServices.Messaging.Responses.BookResponses;
 using BS.ApplicationServices.Messaging.Responses.OrderResponses;
 using System;
