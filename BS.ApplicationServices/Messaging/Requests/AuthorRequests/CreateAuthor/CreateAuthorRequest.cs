@@ -1,6 +1,6 @@
 ﻿using BS.ApplicationServices.ViewModels;
 
-namespace BS.ApplicationServices.Messaging.Requests.AuthorRequests
+namespace BS.ApplicationServices.Messaging.Requests.AuthorRequests.CreateAuthor
 {
     public class CreateAuthorRequest
     {

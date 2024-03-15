@@ -1,6 +1,6 @@
 ﻿using BS.ApplicationServices.ViewModels;
 
-namespace BS.ApplicationServices.Messaging.Requests.UserRequests
+namespace BS.ApplicationServices.Messaging.Requests.UserRequests.CreateUser
 {
     public class CreateUserRequest
     {

@@ -1,11 +1,21 @@
 ﻿using BS.ApplicationServices.Interfaces;
-using BS.ApplicationServices.Messaging.Requests.UserRequests;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.AuthenticateUser;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.CreateUser;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.DeleteUser;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.GetAllUsers;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.GetUserById;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.GetUserByName;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.UpdateUser;
 using BS.ApplicationServices.Messaging.Responses.UserResponse;
 using BS.ApplicationServices.Messaging.Responses.UserResponses;
+using BS.ApplicationServices.ViewModels;
 using BS.Data.Contexts;
+using BS.Data.Exceptions;
 using BS.Data.Helpers;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using ValidationException = BS.Data.Exceptions.ValidationException;
 
 namespace BS.ApplicationServices.Implementations
 {
@@ -30,17 +40,24 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<GetUserByNameResponse> GetUserByNameAsync(GetUserByNameRequest request)
         {
+            var validator = new GetUserByNameRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("GetUserByNames", string.Join("/n", validRes.Errors));
+            }
+
             GetUserByNameResponse response = new();
 
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.FirstName == request.FirstName && x.LastName == request.LastName);
-            if (user is null)
+            var users = await _context.Users.Where(x => x.FirstName == request.FirstName && x.LastName == request.LastName).ToListAsync();
+            if (users is null)
             {
                 _logger.LogInformation("User is not found with first and last name: {firstName} {lastname}", request.FirstName, request.LastName);
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
                 return response;
             }
 
-            response.User = new ()
+            response.Users = users.Select(user => new UserVM()
             {
                 UserId = user.UserId,
                 FirstName = user.FirstName,
@@ -51,7 +68,8 @@ namespace BS.ApplicationServices.Implementations
                 RegistrationDate = DateTime.Now,
                 OrdersCount = user.OrdersCount,
                 HasOrders = user.HasOrders
-            };
+            })
+                .ToList();
 
             return response;
         }
@@ -86,25 +104,33 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<CreateUserResponse> SaveAsync(CreateUserRequest request)
         {
+            var validator = new CreateUserRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("CreateUser", string.Join("/n", validRes.Errors));
+            }
+
             CreateUserResponse response = new();
 
             try
-            {
-                await _context.Users.AddAsync(new()
-                {
-                    UserId = Guid.NewGuid(),
-                    Username = request.User.Username,
-                    Password = Hasher.Hash(request.User.Password),
-                    FirstName = request.User.FirstName,
-                    LastName = request.User.LastName,
-                    Email = request.User.Email,
-                    Address = request.User.Address,
-                    PhoneNumber = request.User.Phone,
-                    RegistrationDate = DateTime.Now
-                });
+            {                              
+                    await _context.Users.AddAsync(new()
+                    {
+                        UserId = Guid.NewGuid(),
+                        Username = request.User.Username,
+                        Password = Hasher.Hash(request.User.Password),
+                        FirstName = request.User.FirstName,
+                        LastName = request.User.LastName,
+                        Email = request.User.Email,
+                        Address = request.User.Address,
+                        PhoneNumber = request.User.Phone,
+                        RegistrationDate = DateTime.Now
+                    });
 
-                await _context.SaveChangesAsync();
-            }
+                    await _context.SaveChangesAsync();
+               
+            }       
             catch (Exception ex)
             {
                 _logger.LogError(ex, "User is not save.");
@@ -117,17 +143,24 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<UpdateUserResponse> UpdateAsync(UpdateUserRequest request)
         {
+            var validator = new UpdateUserRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("UpdateUser", string.Join("/n", validRes.Errors));
+            }
+
             UpdateUserResponse response = new();
 
             try
             {
-                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == request.UserId);
-                if (user is null)
-                {
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == request.UserId);
+            if (user is null)
+            {
                     _logger.LogInformation("User is not found with id: {UserId}", request.UserId);
                     response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
                     return response;
-                }
+            }
                 _context.Entry(user).CurrentValues.SetValues(request.User);
                 await _context.SaveChangesAsync();
             }
@@ -137,22 +170,30 @@ namespace BS.ApplicationServices.Implementations
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
                 return response;
             }
+
             return response;
         }
 
         public async Task<DeleteUserResponse> DeleteAsync(DeleteUserRequest request)
         {
+            var validator = new DeleteUserRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("DeleteUser", string.Join("/n", validRes.Errors));
+            }
+
             DeleteUserResponse response = new();
 
             try
             {
-                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == request.UserId);
-                if (user is null)
-                {
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == request.UserId);
+            if (user is null)
+            {
                     _logger.LogInformation("User is not found with id: {UserId}", request.UserId);
                     response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
                     return response;
-                }
+            }
                 _context.Users.Remove(user);
                 await _context.SaveChangesAsync();
             }
@@ -165,21 +206,26 @@ namespace BS.ApplicationServices.Implementations
             return response;
         }
 
-        public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest request)
+        public async Task<AuthenticateResponse> Authenticate(AuthenticateUserRequest request)
         {
             AuthenticateResponse response = new();
+            var validator = new AuthenticateUserRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("AuthenticateUser", string.Join("/n", validRes.Errors));
+            }
+
             try
             {
                 var user = _context.Users.SingleOrDefault(x => x.Username == request.Username && x.Password == Hasher.Hash(request.Password));
 
-                // return null if user not found
                 if (user == null)
                 { 
                     response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
                     return response;
                 }
 
-                // authentication successful so generate jwt token
                 response.Token =  _jwtAuthenticationsManager.GenerateJwtToken(user);
                 response.Id = user.UserId;
                 response.FirstName = user.FirstName;
@@ -198,6 +244,12 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<GetUserByIdResponse> GetUserByIdAsync(GetUserByIdRequest request)
         {
+            var validator = new GetUserByIdRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("GetUser", string.Join("/n", validRes.Errors));
+            }
 
             GetUserByIdResponse response = new();
 

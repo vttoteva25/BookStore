@@ -1,5 +1,10 @@
-﻿using BS.ApplicationServices.Messaging.Requests.AuthorRequests;
-using BS.ApplicationServices.Messaging.Requests.UserRequests;
+﻿using BS.ApplicationServices.Messaging.Requests.UserRequests.AuthenticateUser;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.CreateUser;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.DeleteUser;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.GetAllUsers;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.GetUserById;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.GetUserByName;
+using BS.ApplicationServices.Messaging.Requests.UserRequests.UpdateUser;
 using BS.ApplicationServices.Messaging.Responses.UserResponse;
 using BS.ApplicationServices.Messaging.Responses.UserResponses;
 
@@ -12,7 +17,7 @@ namespace BS.ApplicationServices.Interfaces
         /// </summary>
         /// <param name="request">Get user request object.</param>
         /// <returns>Return JWT token and user data.</returns>
-        Task<AuthenticateResponse> Authenticate(AuthenticateRequest request);
+        Task<AuthenticateResponse> Authenticate(AuthenticateUserRequest request);
 
         /// <summary>
         /// Get user by id.

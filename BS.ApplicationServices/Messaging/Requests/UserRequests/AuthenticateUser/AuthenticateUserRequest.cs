@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BS.ApplicationServices.Messaging.Requests.UserRequests
+namespace BS.ApplicationServices.Messaging.Requests.UserRequests.AuthenticateUser
 {
-    public class AuthenticateRequest
+    public class AuthenticateUserRequest 
     {
         [Required]
         public string Username { get; set; }
