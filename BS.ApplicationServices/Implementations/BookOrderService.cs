@@ -220,7 +220,7 @@ namespace BS.ApplicationServices.Implementations
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "BookOrder is not deleted.");
+                _logger.LogError(ex, "BookOrder was not deleted.");
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
                 return response;
             }

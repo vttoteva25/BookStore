@@ -155,7 +155,7 @@ namespace BS.ApplicationServices.Implementations
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Book is not updated.");
+                _logger.LogError(ex, "Book was not updated.");
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
                 return response;
             }
