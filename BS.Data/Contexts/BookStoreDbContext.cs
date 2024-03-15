@@ -1,7 +1,9 @@
 ﻿using BS.Data.Entities;
+using BS.Data.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace BS.Data.Contexts
 {
@@ -100,7 +102,64 @@ namespace BS.Data.Contexts
                   RoleId = Guid.Parse("e89e16d2-2a45-4977-a963-0fd740fbacb8"),
                   RoleName = "User"
               });
-                   
+
+            modelBuilder.Entity<User>().HasData(
+              new User
+              {
+                  UserId = Guid.Parse("478a65ac-3492-4dd1-91dd-730d6ad9fbbc"),
+                  FirstName = "Viktoriya",
+                  LastName = "Toteva",                 
+                  PhoneNumber = "0885904536",
+                  Username = "vttoteva",
+                  Email = "viktoriya.toteva@abv.bg",
+                  Address = "Kazanlak",
+                  Password = Hasher.Hash("12345"),
+                  RegistrationDate = DateTime.Now
+              }
+            );
+
+            modelBuilder.Entity<User>().HasData(
+              new User
+              {
+                  UserId = Guid.Parse("b2235601-6b68-4b56-a4c1-c4055d479931"),
+                  FirstName = "Iva",
+                  LastName = "Tananska",
+                  PhoneNumber = "0885904536",
+                  Username = "itananska",
+                  Email = "iva.tananska@abv.bg",
+                  Address = "Plovdiv",
+                  Password = Hasher.Hash("12345"),
+                  RegistrationDate = DateTime.Now
+              }
+            );
+
+            modelBuilder.Entity<UserRole>().HasData(
+                new UserRole
+                {
+                    RoleId = Guid.Parse("111e16d2-2a45-4977-a963-0fd740fbacb8"),
+                    UserId = Guid.Parse("478a65ac-3492-4dd1-91dd-730d6ad9fbbc")
+                }) ;
+
+            modelBuilder.Entity<UserRole>().HasData(
+              new UserRole
+              {
+                  RoleId = Guid.Parse("e89e16d2-2a45-4977-a963-0fd740fbacb8"),
+                  UserId = Guid.Parse("478a65ac-3492-4dd1-91dd-730d6ad9fbbc")
+              });
+
+            modelBuilder.Entity<UserRole>().HasData(
+              new UserRole
+              {
+                  RoleId = Guid.Parse("111e16d2-2a45-4977-a963-0fd740fbacb8"),
+                  UserId = Guid.Parse("b2235601-6b68-4b56-a4c1-c4055d479931")
+              });
+
+            modelBuilder.Entity<UserRole>().HasData(
+              new UserRole
+              {
+                  RoleId = Guid.Parse("e89e16d2-2a45-4977-a963-0fd740fbacb8"),
+                  UserId = Guid.Parse("b2235601-6b68-4b56-a4c1-c4055d479931")
+              });
         }
 
     }

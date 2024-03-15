@@ -1,9 +1,9 @@
-﻿using Azure.Core;
-using BS.ApplicationServices.Interfaces;
+﻿using BS.ApplicationServices.Interfaces;
 using BS.ApplicationServices.Messaging.Requests.UserRequests;
 using BS.ApplicationServices.Messaging.Responses.UserResponse;
 using BS.ApplicationServices.Messaging.Responses.UserResponses;
 using BS.Data.Contexts;
+using BS.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -94,7 +94,7 @@ namespace BS.ApplicationServices.Implementations
                 {
                     UserId = Guid.NewGuid(),
                     Username = request.User.Username,
-                    Password = request.User.Password,
+                    Password = Hasher.Hash(request.User.Password),
                     FirstName = request.User.FirstName,
                     LastName = request.User.LastName,
                     Email = request.User.Email,
@@ -170,7 +170,7 @@ namespace BS.ApplicationServices.Implementations
             AuthenticateResponse response = new();
             try
             {
-                var user = _context.Users.SingleOrDefault(x => x.Username == request.Username && x.Password == request.Password);
+                var user = _context.Users.SingleOrDefault(x => x.Username == request.Username && x.Password == Hasher.Hash(request.Password));
 
                 // return null if user not found
                 if (user == null)
@@ -215,6 +215,7 @@ namespace BS.ApplicationServices.Implementations
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
+                Username = user.Username,
                 Address = user.Address,
                 Phone = user.PhoneNumber,
                 RegistrationDate = DateTime.Now,

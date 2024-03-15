@@ -10,7 +10,7 @@ using BS.WebApiServices.Helpers;
 /// <summary>
 /// Users controller.
 /// </summary>
-[Authorize]
+
 [Route("api/[controller]")]
 [ApiController]
 [Produces("application/json")]
@@ -29,13 +29,14 @@ public class UsersController : Controller
     }
 
     [HttpPost("authenticate")]
-    public async Task<IActionResult> AuthenticateAsync(AuthenticateRequest request) =>Ok(await _service.Authenticate(request)); 
-   
+    public async Task<IActionResult> AuthenticateAsync(AuthenticateRequest request) =>Ok(await _service.Authenticate(request));
+
 
     /// <summary>
     /// Get users list.
     /// </summary>
     /// <returns>Return list of all users.</returns>
+    [Authorize]
     [HttpGet]
     [ProducesResponseType(typeof(GetAllUsersResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -72,6 +73,7 @@ public class UsersController : Controller
     /// Update user.
     /// </summary>
     /// <returns>Return null if not success.</returns>
+    [Authorize]
     [HttpPut("update/{id}")]
     [ProducesResponseType(typeof(UpdateUserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -83,6 +85,7 @@ public class UsersController : Controller
     /// Delete user.
     /// </summary>
     /// <returns>Return null if not success.</returns>
+    [Authorize]
     [HttpDelete("delete/{id}")]
     [ProducesResponseType(typeof(DeleteUserResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
