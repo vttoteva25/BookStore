@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BS.ApplicationServices.Messaging.Requests.UserRoleRequests
+namespace BS.ApplicationServices.Messaging.Requests.UserRoleRequests.GetAllRolesByUserId
 {
     public class GetAllRolesByUserIdRequest
     {

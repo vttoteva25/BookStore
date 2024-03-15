@@ -1,4 +1,8 @@
-﻿using BS.ApplicationServices.Messaging.Requests.RolesRequests;
+﻿using BS.ApplicationServices.Messaging.Requests.RolesRequests.CreateRole;
+using BS.ApplicationServices.Messaging.Requests.RolesRequests.DeleteRole;
+using BS.ApplicationServices.Messaging.Requests.RolesRequests.GetAllRoles;
+using BS.ApplicationServices.Messaging.Requests.RolesRequests.GetRoleByName;
+using BS.ApplicationServices.Messaging.Requests.RolesRequests.UpdateRole;
 using BS.ApplicationServices.Messaging.Requests.UserRoleRequests;
 using BS.ApplicationServices.Messaging.Responses.RolesResponses;
 using BS.ApplicationServices.Messaging.Responses.UserRoleResponses;

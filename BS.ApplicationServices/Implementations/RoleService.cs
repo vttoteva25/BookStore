@@ -1,15 +1,19 @@
 ﻿using BS.ApplicationServices.Interfaces;
-using BS.ApplicationServices.Messaging.Requests.RolesRequests;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests.GetAuthorByName;
+using BS.ApplicationServices.Messaging.Requests.BookRequests.CreateBook;
+using BS.ApplicationServices.Messaging.Requests.BookRequests.GetBookByTitle;
+using BS.ApplicationServices.Messaging.Requests.BookRequests.UpdateBook;
+using BS.ApplicationServices.Messaging.Requests.RolesRequests.CreateRole;
+using BS.ApplicationServices.Messaging.Requests.RolesRequests.DeleteRole;
+using BS.ApplicationServices.Messaging.Requests.RolesRequests.GetAllRoles;
+using BS.ApplicationServices.Messaging.Requests.RolesRequests.GetRoleByName;
+using BS.ApplicationServices.Messaging.Requests.RolesRequests.UpdateRole;
 using BS.ApplicationServices.Messaging.Responses.BookResponses;
 using BS.ApplicationServices.Messaging.Responses.RolesResponses;
 using BS.Data.Contexts;
+using BS.Data.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BS.ApplicationServices.Implementations
 {
@@ -30,6 +34,13 @@ namespace BS.ApplicationServices.Implementations
         }
         public async Task<GetRoleByNameResponse> GetRoleByNameAsync(GetRoleByNameRequest request)
         {
+            var validator = new GetRoleByNameRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("GetRole", string.Join("/n", validRes.Errors));
+            }
+
             GetRoleByNameResponse response = new();
 
             var role = await _context.Roles.SingleOrDefaultAsync(x => x.RoleName == request.RoleName);
@@ -74,6 +85,12 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<CreateRoleResponse> SaveAsync(CreateRoleRequest request)
         {
+            var validator = new CreateRoleRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("CreateRole", string.Join("/n", validRes.Errors));
+            }
             CreateRoleResponse response = new();
 
             try
@@ -98,6 +115,12 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<UpdateRoleResponse> UpdateAsync(UpdateRoleRequest request)
         {
+            var validator = new UpdateRoleRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("UpdateRole", string.Join("/n", validRes.Errors));
+            }
             UpdateRoleResponse response = new();
 
             try
@@ -123,6 +146,12 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<DeleteRoleResponse> DeleteAsync(DeleteRoleRequest request)
         {
+            var validator = new DeleteRoleRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("DeleteRole", string.Join("/n", validRes.Errors));
+            }
             DeleteRoleResponse response = new();
 
             try

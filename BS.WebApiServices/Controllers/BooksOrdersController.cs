@@ -43,7 +43,7 @@ namespace BS.WebApiServices.Controllers
         /// </summary>
         /// <param name="id">Order id.</param>
         /// <returns>List of books filter by order id</returns>
-        [HttpGet("search/{id}")]
+        [HttpGet("getbooks/{id}")]
         [ProducesResponseType(typeof(GetAllBooksByOrderIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -55,7 +55,7 @@ namespace BS.WebApiServices.Controllers
         /// </summary>
         /// <param name="id">Book id.</param>
         /// <returns>List of orders filter by book id</returns>
-        [HttpGet("search/{id}")]
+        [HttpGet("getorders/{id}")]
         [ProducesResponseType(typeof(GetAllOrdersByBookIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

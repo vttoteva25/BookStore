@@ -1,16 +1,19 @@
 ﻿using BS.ApplicationServices.Interfaces;
-using BS.ApplicationServices.Messaging.Requests.UserRoleRequests;
+using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.GetAllOrdersByBookId;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.CreateUserRole;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.CreateUserRoleRequestValidator;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.DeleteUserRole;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.GetAllRolesByUserId;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.GetAllUserRoles;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.GetAllUsersByRoleId;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.UpdateUserRole;
 using BS.ApplicationServices.Messaging.Responses.BookOrderResponses;
 using BS.ApplicationServices.Messaging.Responses.UserRoleResponses;
 using BS.Data.Contexts;
 using BS.Data.Entities;
+using BS.Data.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BS.ApplicationServices.Implementations
 {
@@ -32,6 +35,12 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<GetAllRolesByUserIdResponse> GetAllRolesByUserIdAsync(GetAllRolesByUserIdRequest request)
         {
+            var validator = new GetAllRolesByUserIdRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("GetRolesByUserId", string.Join("/n", validRes.Errors));
+            }
             GetAllRolesByUserIdResponse response = new();
 
             var userRoles = await _context.UsersRoles.Select(x => x).Where(x => x.UserId == request.UserId).ToListAsync();
@@ -60,6 +69,12 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<GetAllUsersByRoleIdResponse> GetAllUsersByRoleIdAsync(GetAllUsersByRoleIdRequest request)
         {
+            var validator = new GetAllUsersByRoleIdRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("GetUsersByRoleId", string.Join("/n", validRes.Errors));
+            }
             GetAllUsersByRoleIdResponse response = new();
 
             var userRoles = await _context.UsersRoles.Select(x => x).Where(x => x.RoleId == request.RoleId).ToListAsync();
@@ -115,6 +130,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<CreateUserRoleResponse> SaveAsync(CreateUserRoleRequest request)
         {
+            var validator = new CreateUserRoleRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("CreateUserRole", string.Join("/n", validRes.Errors));
+            }
+
             CreateUserRoleResponse response = new();
 
             try
@@ -138,6 +160,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<UpdateUserRoleResponse> UpdateAsync(UpdateUserRoleRequest request)
         {
+            var validator = new UpdateUserRoleRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("UpdateUserRole", string.Join("/n", validRes.Errors));
+            }
+
             UpdateUserRoleResponse response = new();
 
             try
@@ -163,6 +192,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<DeleteUserRoleResponse> DeleteAsync(DeleteUserRoleRequest request)
         {
+            var validator = new DeleteUserRoleRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("DeleteUserRole", string.Join("/n", validRes.Errors));
+            }
+
             DeleteUserRoleResponse response = new();
 
             try

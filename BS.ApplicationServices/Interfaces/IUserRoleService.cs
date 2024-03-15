@@ -1,5 +1,10 @@
 ﻿using BS.ApplicationServices.Messaging.Requests.BookOrderRequests;
-using BS.ApplicationServices.Messaging.Requests.UserRoleRequests;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.CreateUserRoleRequestValidator;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.DeleteUserRole;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.GetAllRolesByUserId;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.GetAllUserRoles;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.GetAllUsersByRoleId;
+using BS.ApplicationServices.Messaging.Requests.UserRoleRequests.UpdateUserRole;
 using BS.ApplicationServices.Messaging.Responses.BookOrderResponses;
 using BS.ApplicationServices.Messaging.Responses.UserRoleResponses;
 using System;

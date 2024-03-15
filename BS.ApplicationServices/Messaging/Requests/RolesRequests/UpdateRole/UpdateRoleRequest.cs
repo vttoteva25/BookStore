@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BS.ApplicationServices.Messaging.Requests.RolesRequests
+namespace BS.ApplicationServices.Messaging.Requests.RolesRequests.UpdateRole
 {
     public class UpdateRoleRequest
     {

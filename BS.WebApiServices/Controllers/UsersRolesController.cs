@@ -42,7 +42,7 @@ namespace BS.WebApiServices.Controllers
         /// </summary>
         /// <param name="id">Role id.</param>
         /// <returns>List of users filter by role id</returns>
-        [HttpGet("search/{id}")]
+        [HttpGet("getusers/{id}")]
         [ProducesResponseType(typeof(GetAllUsersByRoleIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -54,7 +54,7 @@ namespace BS.WebApiServices.Controllers
         /// </summary>
         /// <param name="id">User id.</param>
         /// <returns>List of roles filter by user id</returns>
-        [HttpGet("search/{id}")]
+        [HttpGet("getroles/{id}")]
         [ProducesResponseType(typeof(GetAllRolesByUserIdResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

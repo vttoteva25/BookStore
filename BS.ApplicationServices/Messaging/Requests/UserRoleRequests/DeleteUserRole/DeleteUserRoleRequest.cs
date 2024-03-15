@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BS.ApplicationServices.Messaging.Requests.UserRoleRequests
+namespace BS.ApplicationServices.Messaging.Requests.UserRoleRequests.DeleteUserRole
 {
-    public class CreateUserRoleRequest
+    public class DeleteUserRoleRequest
     {
         public UserRoleVM UserRole { get; set; }
 
-        public CreateUserRoleRequest(UserRoleVM userRole)
+        public DeleteUserRoleRequest(UserRoleVM userRole)
         {
             UserRole = userRole;
         }

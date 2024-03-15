@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BS.ApplicationServices.Messaging.Requests.RolesRequests
+namespace BS.ApplicationServices.Messaging.Requests.RolesRequests.CreateRole
 {
     public class CreateRoleRequest
     {
         public RoleVM Role { get; set; }
 
-        public CreateRoleRequest(RoleVM role) 
+        public CreateRoleRequest(RoleVM role)
         {
             Role = role;
         }
