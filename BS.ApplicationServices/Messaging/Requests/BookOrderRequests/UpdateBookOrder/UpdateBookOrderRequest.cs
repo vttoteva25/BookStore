@@ -1,11 +1,6 @@
 ﻿using BS.ApplicationServices.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BS.ApplicationServices.Messaging.Requests.BookOrderRequests
+namespace BS.ApplicationServices.Messaging.Requests.BookOrderRequests.UpdateBookOrder
 {
     public class UpdateBookOrderRequest
     {
@@ -15,7 +10,7 @@ namespace BS.ApplicationServices.Messaging.Requests.BookOrderRequests
 
         public BookOrderVM? BookOrder { get; set; }
 
-        public UpdateBookOrderRequest(Guid bookId, Guid orderId,BookOrderVM bookOrder) 
+        public UpdateBookOrderRequest(Guid bookId, Guid orderId, BookOrderVM bookOrder)
         {
             BookId = bookId;
             OrderId = orderId;

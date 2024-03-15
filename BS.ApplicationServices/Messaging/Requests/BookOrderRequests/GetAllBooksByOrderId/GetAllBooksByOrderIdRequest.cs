@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BS.ApplicationServices.Messaging.Requests.BookOrderRequests
+namespace BS.ApplicationServices.Messaging.Requests.BookOrderRequests.GetAllBooksByOrderId
 {
     public class GetAllBooksByOrderIdRequest
     {

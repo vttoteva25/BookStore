@@ -1,4 +1,9 @@
-﻿using BS.ApplicationServices.Messaging.Requests.BookOrderRequests;
+﻿using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.CreateBookOrder;
+using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.DeleteBookOrder;
+using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.GetAllBooksByOrderId;
+using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.GetAllBooksOrders;
+using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.GetAllOrdersByBookId;
+using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.UpdateBookOrder;
 using BS.ApplicationServices.Messaging.Requests.BookRequests;
 using BS.ApplicationServices.Messaging.Responses.BookOrderResponses;
 using BS.ApplicationServices.Messaging.Responses.BookResponses;
@@ -17,7 +22,7 @@ namespace BS.ApplicationServices.Interfaces
         /// </summary>
         /// <param name="request">Get BookOrder request object.</param>
         /// <returns>Return list with BookOrder.</returns>
-        Task<GetAllBookOrdersResponse> GetBookOrdersAsync(GetAllBookOrdersRequest request);       
+        Task<GetAllBookOrdersResponse> GetBookOrdersAsync(GetAllBookOrdersRequest request);
 
         /// <summary>
         /// Get orders by book id.

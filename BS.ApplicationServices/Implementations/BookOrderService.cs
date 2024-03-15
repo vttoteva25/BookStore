@@ -1,7 +1,14 @@
 ﻿using BS.ApplicationServices.Interfaces;
-using BS.ApplicationServices.Messaging.Requests.BookOrderRequests;
+using BS.ApplicationServices.Messaging.Requests.AuthorRequests.GetAuthorByName;
+using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.CreateBookOrder;
+using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.DeleteBookOrder;
+using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.GetAllBooksByOrderId;
+using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.GetAllBooksOrders;
+using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.GetAllOrdersByBookId;
+using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.UpdateBookOrder;
 using BS.ApplicationServices.Messaging.Responses.BookOrderResponses;
 using BS.Data.Contexts;
+using BS.Data.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -21,10 +28,17 @@ namespace BS.ApplicationServices.Implementations
         {
             _logger = logger;
             _context = context;
-        }
-        
+        }        
+
         public async Task<GetAllOrdersByBookIdResponse> GetOrdersByBookIdAsync(GetAllOrdersByBookIdRequest request)
         {
+            var validator = new GetAllOrdersByBookIdRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("GetOrdersByBookId", string.Join("/n", validRes.Errors));
+            }
+
             GetAllOrdersByBookIdResponse response = new();
 
             var bookOrders = await _context.BooksOrders.Select(x => x).Where(x => x.BookId == request.BookId).ToListAsync();
@@ -59,6 +73,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<GetAllBooksByOrderIdResponse> GetBooksByOrderIdAsync(GetAllBooksByOrderIdRequest request)
         {
+            var validator = new GetAllBooksByOrderIdRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("GetBooksByOrderIdAsync", string.Join("/n", validRes.Errors));
+            }
+
             GetAllBooksByOrderIdResponse response = new();
 
             var bookOrders = await _context.BooksOrders.Select(x => x).Where(x => x.OrderId == request.OrderId).ToListAsync();
@@ -115,6 +136,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<CreateBookOrderResponse> SaveAsync(CreateBookOrderRequest request)
         {
+            var validator = new CreateBookOrderRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("CreateBookOrder", string.Join("/n", validRes.Errors));
+            }
+
             CreateBookOrderResponse response = new();
 
             try
@@ -138,6 +166,13 @@ namespace BS.ApplicationServices.Implementations
 
         public async Task<UpdateBookOrderResponse> UpdateAsync(UpdateBookOrderRequest request)
         {
+            var validator = new UpdateBookOrderRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("UpdateBookOrder", string.Join("/n", validRes.Errors));
+            }
+
             UpdateBookOrderResponse response = new();
 
             try
@@ -145,7 +180,7 @@ namespace BS.ApplicationServices.Implementations
                 var bookOrder = await _context.BooksOrders.SingleOrDefaultAsync(x => x.BookId == request.BookId && x.OrderId == request.OrderId);
                 if (bookOrder is null)
                 {
-                    _logger.LogInformation("BookOrder was not found.");
+                    _logger.LogInformation("Requested BookOrder is not found.");
                     response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
                     return response;
                 }
@@ -160,8 +195,16 @@ namespace BS.ApplicationServices.Implementations
             }
             return response;
         }
+
         public async Task<DeleteBookOrderResponse> DeleteAsync(DeleteBookOrderRequest request)
         {
+            var validator = new DeleteBookOrderRequestValidator();
+            var validRes = validator.Validate(request);
+            if (!validRes.IsValid)
+            {
+                throw new ValidationException("DeleteBookOrder", string.Join("/n", validRes.Errors));
+            }
+
             DeleteBookOrderResponse response = new();
 
             try
@@ -169,7 +212,7 @@ namespace BS.ApplicationServices.Implementations
                 var bookOrder = await _context.BooksOrders.SingleOrDefaultAsync(x => x.BookId == request.BookOrder.BookId && x.OrderId == request.BookOrder.OrderId);
                 if (bookOrder is null)
                 {
-                    _logger.LogInformation("BookOrder was  not found.");
+                    _logger.LogInformation("Requested to BookOrder to delete is not found.");
                     response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
                     return response;
                 }
@@ -178,11 +221,10 @@ namespace BS.ApplicationServices.Implementations
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "BookOrder is not updated.");
+                _logger.LogError(ex, "BookOrder is not deleted.");
                 response.StatusCode = Messaging.BusinessStatusCodeEnum.InternalServerError;
                 return response;
             }
-
             return response;
         }
 
