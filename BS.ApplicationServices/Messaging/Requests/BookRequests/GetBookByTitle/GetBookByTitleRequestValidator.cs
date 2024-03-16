@@ -8,6 +8,7 @@ namespace BS.ApplicationServices.Messaging.Requests.BookRequests.GetBookByTitle
         public GetBookByTitleRequestValidator()
         {
             RuleFor(x=>x.Title).NotEmpty();
+            RuleFor(x=>x.Title).MaximumLength(50);
         }
     }
 }
