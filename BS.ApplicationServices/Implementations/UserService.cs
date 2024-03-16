@@ -115,6 +115,22 @@ namespace BS.ApplicationServices.Implementations
 
             try
             {
+                var existSameUsername = _context.Users.Any(user => user.Username.Equals(request.User.Username));
+                if (existSameUsername)
+                {
+                    _logger.LogError("User with same username alredy exist");
+                    response.StatusCode = Messaging.BusinessStatusCodeEnum.BadRequest;
+                    return response;
+                }
+
+                var existSameEmail = _context.Users.Any(user => user.Email.Equals(request.User.Email));
+                if (existSameEmail)
+                {
+                    _logger.LogError("User with same e-mail alredy exist");
+                    response.StatusCode = Messaging.BusinessStatusCodeEnum.BadRequest;
+                    return response;
+                }
+
                 var userId = Guid.NewGuid();
                 var userModel = new User()
                 {
@@ -131,7 +147,7 @@ namespace BS.ApplicationServices.Implementations
 
                  await _context.Users.AddAsync(userModel);
 
-                    var defaultRole = _context.Roles.FirstOrDefault(role => role.RoleName.Equals("User"));
+                var defaultRole = _context.Roles.FirstOrDefault(role => role.RoleName.Equals("User"));
                 await _context.UsersRoles.AddAsync(new Data.Entities.UserRole()
                 {
                     UserId = userId,
