@@ -51,7 +51,7 @@ namespace BS.WebApiServices.Controllers
         public async Task<IActionResult> Get([FromRoute] string firstName, [FromRoute] string lastName) => Ok(await _service.GetAuthorByNameAsync(new(firstName, lastName)));
 
         /// <summary>
-        /// Save movie.
+        /// Add author.
         /// </summary>
         /// <returns>Return null if not success.</returns>
         [HttpPost]

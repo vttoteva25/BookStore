@@ -146,11 +146,29 @@ namespace BS.ApplicationServices.Implementations
 
             try
             {
+                var book = await _context.Books.SingleOrDefaultAsync(x => x.BookId == request.BookOrder.BookId);
+                if (book is null)
+                {
+                    _logger.LogInformation("Book is not found with id: {id}", request.BookOrder.BookId);
+                    response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
+                    return response;
+                }
+                var order = await _context.Orders.SingleOrDefaultAsync(x => x.OrderId == request.BookOrder.OrderId);
+                if (order is null)
+                {
+                    _logger.LogInformation("Order is not found with id: {id}", request.BookOrder.OrderId);
+                    response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
+                    return response;
+                }
+
                 await _context.BooksOrders.AddAsync(new()
                 {
                     BookId = request.BookOrder.BookId,
-                    OrderId = request.BookOrder.OrderId
+                    OrderId = request.BookOrder.OrderId,
+                    Book = book,
+                    Order = order
                 });
+
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)

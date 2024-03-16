@@ -104,9 +104,9 @@ namespace BS.ApplicationServices.Implementations
             {
                 await _context.Orders.AddAsync(new()
                 {
-                    OrderId = request.Order.OrderId,
+                    OrderId = Guid.NewGuid(),
                     UserId = request.Order.UserId,
-                    OrderDate = request.Order.OrderDate,
+                    OrderDate = DateTime.Now,
                     TotalAmount = request.Order.TotalAmount,
                     PaymentMethod = request.Order.PaymentMethod,
                     DeliveryAddress = request.Order.DeliveryAddress,

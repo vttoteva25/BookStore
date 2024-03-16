@@ -40,6 +40,9 @@ try
     builder.Services.AddScoped<IBookService, BookService>();
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IOrderService, OrderService>();
+    builder.Services.AddScoped<IRoleService, RoleService>();
+    builder.Services.AddScoped<IBookOrderService, BookOrderService>();
+    builder.Services.AddScoped<IUserRoleService, UserRoleService>();
     builder.Services.AddScoped<IJWTAuthenticationsManager, JWTAuthenticationsManager>();
 
     builder.Services.AddSwaggerGen(option =>

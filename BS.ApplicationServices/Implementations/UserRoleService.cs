@@ -141,10 +141,27 @@ namespace BS.ApplicationServices.Implementations
 
             try
             {
+                var role = await _context.Roles.SingleOrDefaultAsync(x => x.RoleId == request.UserRole.RoleId);
+                if (role is null)
+                {
+                    _logger.LogInformation("Role is not found with id: {id}", request.UserRole.RoleId);
+                    response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
+                    return response;
+                }
+                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserId == request.UserRole.UserId);
+                if (user is null)
+                {
+                    _logger.LogInformation("Order is not found with id: {id}", request.UserRole.UserId);
+                    response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
+                    return response;
+                }
+
                 await _context.UsersRoles.AddAsync(new()
                 {
                     UserId = request.UserRole.UserId,
-                    RoleId = request.UserRole.RoleId
+                    RoleId = request.UserRole.RoleId,
+                    User = user,
+                    Role = role
                 });
                 await _context.SaveChangesAsync();
             }

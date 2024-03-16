@@ -2,7 +2,7 @@
 {
     public class BookVM
     {
-        public required Guid BookId { get; set; }
+        public Guid BookId { get; set; }
 
         public required string Title { get; set; }
 

@@ -2,7 +2,7 @@
 {
     public class OrderVM
     {
-        public required Guid OrderId { get; set; }
+        public Guid OrderId { get; set; }
 
         public required Guid UserId { get; set; }
 

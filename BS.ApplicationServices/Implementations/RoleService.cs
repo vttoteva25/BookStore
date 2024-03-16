@@ -97,7 +97,7 @@ namespace BS.ApplicationServices.Implementations
             {
                 await _context.Roles.AddAsync(new()
                 {
-                    RoleId = request.Role.RoleId,
+                    RoleId = Guid.NewGuid(),
                     RoleName = request.Role.RoleName,
                     RoleDescription = request.Role.RoleDescription
                 });

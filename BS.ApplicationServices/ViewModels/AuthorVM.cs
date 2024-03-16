@@ -2,7 +2,7 @@
 {
     public class AuthorVM
     {
-        public required Guid AuthorId { get; set; }
+        public Guid AuthorId { get; set; }
 
         public required string FirstName { get; set; }
 

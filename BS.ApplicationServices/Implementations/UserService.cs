@@ -10,6 +10,7 @@ using BS.ApplicationServices.Messaging.Responses.UserResponse;
 using BS.ApplicationServices.Messaging.Responses.UserResponses;
 using BS.ApplicationServices.ViewModels;
 using BS.Data.Contexts;
+using BS.Data.Entities;
 using BS.Data.Helpers;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -113,19 +114,31 @@ namespace BS.ApplicationServices.Implementations
             CreateUserResponse response = new();
 
             try
-            {                              
-                    await _context.Users.AddAsync(new()
-                    {
-                        UserId = Guid.NewGuid(),
-                        Username = request.User.Username,
-                        Password = Hasher.Hash(request.User.Password),
-                        FirstName = request.User.FirstName,
-                        LastName = request.User.LastName,
-                        Email = request.User.Email,
-                        Address = request.User.Address,
-                        PhoneNumber = request.User.Phone,
-                        RegistrationDate = DateTime.Now
-                    });
+            {
+                var userId = Guid.NewGuid();
+                var userModel = new User()
+                {
+                    UserId = userId,
+                    Username = request.User.Username,
+                    Password = Hasher.Hash(request.User.Password),
+                    FirstName = request.User.FirstName,
+                    LastName = request.User.LastName,
+                    Email = request.User.Email,
+                    Address = request.User.Address,
+                    PhoneNumber = request.User.Phone,
+                    RegistrationDate = DateTime.Now
+                };
+
+                 await _context.Users.AddAsync(userModel);
+
+                    var defaultRole = _context.Roles.FirstOrDefault(role => role.RoleName.Equals("User"));
+                await _context.UsersRoles.AddAsync(new Data.Entities.UserRole()
+                {
+                    UserId = userId,
+                    RoleId = defaultRole.RoleId,
+                    User = userModel,
+                    Role = defaultRole,
+                });
 
                     await _context.SaveChangesAsync();
                

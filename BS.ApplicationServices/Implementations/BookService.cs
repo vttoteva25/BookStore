@@ -107,7 +107,7 @@ namespace BS.ApplicationServices.Implementations
             {
                 await _context.Books.AddAsync(new()
                 {
-                    BookId = request.Book.BookId,
+                    BookId = Guid.NewGuid(),
                     Title = request.Book.Title,
                     AuthorId = request.Book.AuthorId,
                     Genre = request.Book.Genre,

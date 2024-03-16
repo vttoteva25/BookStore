@@ -108,7 +108,7 @@ namespace BS.ApplicationServices.Implementations
             {
                 await _context.Authors.AddAsync(new()
                 {
-                    AuthorId = request.Author.AuthorId,
+                    AuthorId = Guid.NewGuid(),
                     FirstName = request.Author.FirstName,
                     LastName = request.Author.LastName,
                     Email = request.Author.Email,
