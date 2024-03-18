@@ -6,6 +6,7 @@ using BS.ApplicationServices.Messaging.Requests.BookRequests.GetBookByTitle;
 using BS.ApplicationServices.Messaging.Requests.BookRequests.UpdateBook;
 using BS.ApplicationServices.Messaging.Responses.BookResponses;
 using BS.Data.Contexts;
+using BS.Data.Entities;
 using BS.Data.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -115,7 +116,7 @@ namespace BS.ApplicationServices.Implementations
                     ISBN = request.Book.ISBN,
                     Language = request.Book.Language,
                     QuantityAvailable = request.Book.QuantityAvailable,
-                    Available = request.Book.Available,
+                    Available = request.Book.QuantityAvailable > 0,
                     Description = request.Book.Description
                 });
                 await _context.SaveChangesAsync();

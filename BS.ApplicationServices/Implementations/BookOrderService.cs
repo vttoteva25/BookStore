@@ -7,6 +7,7 @@ using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.GetAllOrdersBy
 using BS.ApplicationServices.Messaging.Requests.BookOrderRequests.UpdateBookOrder;
 using BS.ApplicationServices.Messaging.Responses.BookOrderResponses;
 using BS.Data.Contexts;
+using BS.Data.Entities;
 using BS.Data.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -160,14 +161,26 @@ namespace BS.ApplicationServices.Implementations
                     response.StatusCode = Messaging.BusinessStatusCodeEnum.MissingObject;
                     return response;
                 }
-
-                await _context.BooksOrders.AddAsync(new()
+                if (book.Available) 
                 {
-                    BookId = request.BookOrder.BookId,
-                    OrderId = request.BookOrder.OrderId,
-                    Book = book,
-                    Order = order
-                });
+                    var updatedBook = book;
+                    await _context.BooksOrders.AddAsync(new()
+                    {
+                        BookId = request.BookOrder.BookId,
+                        OrderId = request.BookOrder.OrderId,
+                        Book = book,
+                        Order = order
+                    });
+
+                    updatedBook.QuantityAvailable--;
+                    updatedBook.Available = updatedBook.QuantityAvailable > 0;
+
+                    _context.Books.Entry(book).CurrentValues.SetValues(updatedBook);
+                }
+
+                var updatedOrder = order;
+                order.TotalAmount += book.Price;
+                _context.Orders.Entry(order).CurrentValues.SetValues(updatedOrder);
 
                 await _context.SaveChangesAsync();
             }

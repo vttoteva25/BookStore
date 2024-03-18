@@ -107,7 +107,6 @@ namespace BS.ApplicationServices.Implementations
                     OrderId = Guid.NewGuid(),
                     UserId = request.Order.UserId,
                     OrderDate = DateTime.Now,
-                    TotalAmount = request.Order.TotalAmount,
                     PaymentMethod = request.Order.PaymentMethod,
                     DeliveryAddress = request.Order.DeliveryAddress,
                     DeliveryStatus = request.Order.DeliveryStatus,

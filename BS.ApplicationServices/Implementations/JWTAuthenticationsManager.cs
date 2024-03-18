@@ -33,14 +33,12 @@ namespace BS.ApplicationServices.Implementations
             // generate token that is valid for 7 days
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_secret);
-            var userRoles = user.Roles.Select(role => role.RoleName);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
                 {
                   new Claim("id", user.UserId.ToString()),
-                  new Claim("username", user.Username.ToString()),
-                  new Claim("roles", string.Join(",", userRoles))
+                  new Claim("username", user.Username.ToString())
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
